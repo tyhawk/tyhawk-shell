@@ -1,0 +1,79 @@
+#!/bin/bash
+###############################################################################
+# repoman - adding multiple Debian repositories easily
+###############################################################################
+# (C) 2013 - John Gerritse
+# Version 20140118
+###############################################################################
+
+# Variables I need
+REPOCONF="/usr/local/etc/repoman.conf"
+APTSOURCES="/etc/apt/sources.list.d"
+RELEASE=$(grep "^deb" /etc/apt/sources.list | head -n 1 | awk '{print $3}')
+
+# First, test if the config file exists
+if [[ ! -f "$REPOCONF" ]]; then
+    printf "ERROR! Config file $REPOCONF not found\n"
+    exit 1
+fi
+
+# Next, check if run as root
+if [[ "$EUID" -ne 0 ]]; then
+   printf "ERROR! This script must be run as root\n" 1>&2
+   exit 1
+fi
+
+# Now we go over the PPA's one by one and add them if they are missing
+for PPA in $(grep -v ^# $REPOCONF|sort -u)
+do
+    # Let's pull the PPA name apart
+    LAUNCHPAD_ID=$(echo $PPA|cut -c 5-|cut -d "/" -f 1)
+    P_ARCHIVE=$(echo $PPA|cut -c 5-|cut -d "/" -f 2)
+    # Now to check if we already have this PPAA
+    printf "Checking PPA $LAUNCHPAD_ID-$P_ARCHIVE... "
+    if [[ ! -f "$APTSOURCES/$LAUNCHPAD_ID-$P_ARCHIVE-$RELEASE.list" ]]; then
+	printf "MISSING!\n"
+        apt-add-repository -y $PPA
+    else
+	printf "OK\n"
+    fi
+done    
+
+# GetDeb PPA's
+if [[ ! -f "$APTSOURCES/getdeb.list" ]]; then
+    printf "Do you wish to add the GetDeb repositories?\n"
+    select yn in "Yes" "No"; do
+        case $yn in
+            Yes )   wget -q -O - http://archive.getdeb.net/getdeb-archive.key | apt-key add -
+                    # $RELEASE is not expanded... fix this!
+                    sh -c 'echo "deb http://archive.getdeb.net/ubuntu $RELEASE-getdeb apps" >> /etc/apt/sources.list.d/getdeb.list'
+                    sh -c 'echo "deb http://archive.getdeb.net/ubuntu $RELEASE-getdeb games" >> /etc/apt/sources.list.d/getdeb.list'
+                    break;;
+            No )    printf "Skipping adding the GetDeb repo's\n"
+                    break;;
+        esac
+    done
+fi
+
+# Opera PPA
+if [[ ! -f "$APTSOURCES/opera.list" ]]; then
+	printf "Adding the Opera PPA.\n"
+	wget -O - http://deb.opera.com/archive.key | apt-key add -
+	sh -c 'echo "deb http://deb.opera.com/opera/ stable non-free" >> /etc/apt/sources.list.d/opera.list'
+fi
+
+# Matroska Tool
+if [[ ! -f "$APTSOURCES/matroska.list" ]]; then
+	printf "Adding the Matroska PPA.\n"
+	wget -q -O - http://www.bunkus.org/gpg-pub-moritzbunkus.txt | apt-key add -
+	sh -c 'echo "deb http://www.bunkus.org/ubuntu/saucy/ ./" >>  /etc/apt/sources.list.d/matroska.list'
+	sh -c 'echo "deb-src http://www.bunkus.org/ubuntu/saucy/ ./" >>  /etc/apt/sources.list.d/matroska.list'
+fi
+
+# Updating the repo's
+printf "Updating the repository cache.\n"
+sleep 2
+apt-get update
+
+# END
+###
