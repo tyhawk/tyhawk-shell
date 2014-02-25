@@ -1,0 +1,39 @@
+#!/bin/bash
+#
+# Fontman
+# Installing font from Dropbox automagically
+##############################################
+# Version 20140119
+##############################################
+
+ttf_src="$HOME/Dropbox/EyeCandy/Fonts/ttf"
+otf_src="$HOME/Dropbox/EyeCandy/Fonts/opentype"
+ttf_dest="/usr/local/share/fonts/truetypefonts"
+otf_dest="/usr/local/share/fonts/opentype"
+
+# TTF
+printf "Copying TrueType fonts.\n"
+for font in $(find $ttf_src -regex ".*\.\(ttf\|TTF\)" -exec basename {} \;)
+do
+	if [[ ! -e "$ttf_dest/$font" ]]; then
+		printf "Installing $font\n"
+		sudo cp  $ttf_src/$font $ttf_dest/$font
+	fi
+done
+
+# OTF
+printf "Copying OpenType fonts.\n"
+for font in $(find $otf_src -regex ".*\.\(otf\|OTF\)" -exec basename {} \;)
+do
+	if [[ ! -e "$otf_dest/$font" ]]; then
+		printf "Installing $font\n"
+		sudo cp  $otf_src/$font $ttf_dest/$font
+	fi
+done
+
+# Reload font cache
+printf "Reloading font cache.\n"
+sudo fc-cache -f -v
+
+# END
+###
