@@ -34,7 +34,7 @@ usage() {
     printf "  -e EMAILADDRESS       Specify an email address to send the report to.\n\n"
     printf " The -r and -e options are both optional!\n"
     printf " When running $PROGNAME non-interactively, always use -e.\n"
-}    
+}   
 
 ###
 # The actual script
@@ -52,7 +52,7 @@ while getopts ":r:e:h" opt; do
 done
 shift $(($OPTIND - 1))
 
-# Create temp file and set colours
+# Create temp file
 create_tmp
 
 printf "Starting analysis of the current queue.\n"
