@@ -1,0 +1,204 @@
+#!/bin/bash
+###########################################################################
+# mailqstats - Mailq statistical analysis
+###########################################################################
+# (c) 2013/2014 by John Gerritse 
+# Version 20140320
+###########################################################################
+
+# Know thyself
+PROGNAME=$(basename $0)
+
+###
+# Functions
+###
+create_tmp() {
+    # Creating the tempfile
+    TEMP_FILE=$(mktemp -q "/tmp/$PROGNAME.$$.XXXXXX")
+}
+remove_tmp() {
+    # Removing the tempfile
+    if [[ -e "$TEMP_FILE" ]]; then
+        rm -rf $TEMP_FILE
+    fi
+}
+create_email() {
+    printf "Sending report to $ebayemail.\n"
+    cat $MS_REPORT | mail -s "Email queue report for server $EMAILHOST" $ebayemail
+}
+usage() {
+    printf "Usage: $PROGNAME [options]\n\n"
+    printf "Options:\n"
+    printf "  -h                    Show this help message and exit.\n"
+    printf "  -r HOSTNAME           Specify a remote hostname and analyse the queue for that server.\n"
+    printf "  -e EMAILADDRESS       Specify an email address to send the report to.\n\n"
+    printf " The -r and -e options are both optional!\n"
+    printf " When running $PROGNAME non-interactively, always use -e.\n"
+}    
+
+###
+# The actual script
+###
+# Get the command line options
+while getopts ":r:e:h" opt; do
+    case $opt in
+        r  )  REMOTEHOST="$OPTARG" ;;
+        e  )  EMAILTO="$OPTARG" ;;
+        h  )  usage; exit 0 ;;
+        \? )  printf "Unknown option: -$OPTARG\n" >&2; exit 1;;
+        :  )  printf "Missing option argument for -$OPTARG\n" >&2; exit 1;;
+        *  )  printf "Unimplimented option: -$OPTARG" >&2; exit 1;;
+    esac
+done
+shift $(($OPTIND - 1))
+
+# Create temp file and set colours
+create_tmp
+
+printf "Starting analysis of the current queue.\n"
+# Root not needed, so check for it.
+if [[ "$UID" -eq 0 ]]; then
+    printf "Root access is not required.\n"
+fi
+
+# Dumping email queue in a temp file
+if [[ -z "$REMOTEHOST" ]]; then
+    # $1 was empty, so we report for localhost
+    mailq > $TEMP_FILE
+else
+    # $1 was not empty, so we fetch the mailq over ssh
+    ssh $USER@$REMOTEHOST "mailq" > $TEMP_FILE
+fi
+
+# Total emails in queue
+EMAILQ=$(cat $TEMP_FILE|awk '/^-- /{ print $5 }')
+
+# Count suspended emails
+SUSPENDED=$(cat $TEMP_FILE|grep -c '^(delivery temporarily suspended:')
+
+# Count time-outs
+SUS_TIMEOUT=$(cat $TEMP_FILE|grep -c '^(delivery temporarily suspended:')
+SUS_TIMEOUT_DOMS=( $(cat $TEMP_FILE|grep '^(delivery temporarily suspended:' | awk '/Connection timed out\)/ { print $6 }' | cut -d '[' -f 1 | sort -u) )
+
+# Count refused to talk to me
+SUS_MAXCONNECT=$(cat $TEMP_FILE|grep '^(delivery temporarily suspended:'|grep -c 'refused to talk to me')
+SUS_MAXCONNECT_DOMS=( $(cat $TEMP_FILE|grep '^(delivery temporarily suspended:' | awk '/refused to talk to me/ { print $5 }' | cut -d '[' -f 1 | sort -u) )
+
+# Count too many recipients errors
+TOOMANYRECIPIENTS=$(cat $TEMP_FILE|grep -c 'too many recipients from')
+TOOMANYRECIPIENTS_DOMS=( $(cat $TEMP_FILE|grep 'too many recipients from'|awk -F "[" '{print $1}'|tr -d "^(host "|sort -u) )
+
+# MX record errors
+MX_ERRORS=$(cat $TEMP_FILE|grep -c '(Host or domain name not found.')
+MX_ERRORS_DOMS=( $(cat $TEMP_FILE|grep '(Host or domain name not found.'|awk '{ print $11 }'|tr -d "^name="|sort -u) )
+
+
+# I will print the report to screen and file ($MS_LOG)
+MS_REPORT="$HOME/mailqstats.report"
+
+# If the report file exists, we need to empty it
+if [[ -e "$MS_REPORT" ]]; then
+    cat /dev/null > $MS_REPORT
+fi
+
+# Set the proper hostname
+if [[ -z "$REMOTEHOST" ]]; then
+    # if $1 was empty, we report for localhost
+    EMAILHOST="$HOSTNAME"
+else
+    # $1 was not empty, we report for a remote host
+    EMAILHOST="$REMOTEHOST"
+fi
+
+# Printing the report to STDOUT & file
+printf "..:: eBay Classifieds Group - $PROGNAME ::.. \n" >> $MS_REPORT
+printf "Analysis for host $EMAILHOST.\n\n" >> $MS_REPORT
+printf "Emails in the queue:\t\t\t$EMAILQ\n" >> $MS_REPORT
+printf "Emails with suspended:\t\t\t$SUSPENDED\n" >> $MS_REPORT
+printf "Emails with time-outs:\t\t\t$SUS_TIMEOUT\n" >> $MS_REPORT
+printf "Emails with max connections:\t\t$SUS_MAXCONNECT\n" >> $MS_REPORT
+printf "Emails with too many recipients:\t$TOOMANYRECIPIENTS\n" >> $MS_REPORT
+printf "Emails with MX record errors:\t\t$MX_ERRORS\n" >> $MS_REPORT
+printf "Domains with time-outs:\t\t\t${#SUS_TIMEOUT_DOMS[*]}\n" >> $MS_REPORT
+printf "Domains with max connections:\t\t${#SUS_MAXCONNECT_DOMS[*]}\n" >> $MS_REPORT
+printf "Domains with too many recipients:\t${#TOOMANYRECIPIENTS_DOMS[*]}\n" >> $MS_REPORT
+printf "Domains with MX record errors:\t\t${#MX_ERRORS_DOMS[*]}\n\n" >> $MS_REPORT
+
+# Timeout domains
+if [[ ${#SUS_TIMEOUT_DOMS[*]} -gt 0 ]]; then
+    printf "Domains with time-outs are:\n" >> $MS_REPORT
+    for domain in "${SUS_TIMEOUT_DOMS[@]}"
+    do
+        printf "* $domain\n" >> $MS_REPORT
+    done
+    printf "\n" >> $MS_REPORT
+else
+    printf "No domains with timeouts to report.\n\n" >> $MS_REPORT
+fi
+
+# Maximum connection reached domains
+if [[ ${#SUS_MAXCONNECT_DOMS[*]} -gt 0 ]]; then
+    printf "Domains with max connections are:\n" >> $MS_REPORT
+    for domain in "${SUS_MAXCONNECT_DOMS[@]}"
+    do
+        printf "* $domain\n" >> $MS_REPORT
+    done
+    printf "\n" >> $MS_REPORT
+else
+    printf "No domains with max connections to report.\n\n" >> $MS_REPORT
+fi
+
+# Too many recipients domains
+if [[ ${#TOOMANYRECIPIENTS_DOMS[*]} -gt 0 ]]; then
+    printf "Domains with too many recipients are:\n" >> $MS_REPORT
+    for domain in "${TOOMANYRECIPIENTS_DOMS[@]}"
+    do
+        printf "* $domain\n" >> $MS_REPORT
+    done
+    printf "\n" >> $MS_REPORT
+else
+    printf "No domains with too many recipients to report.\n\n" >> $MS_REPORT
+fi
+ 
+# Domains with invalid MX records
+if [[ ${#MX_ERRORS_DOMS[*]} -gt 0 ]]; then
+    printf "Domains with MX record errors are:\n" >> $MS_REPORT
+    for domain in "${MX_ERRORS_DOMS[@]}"
+    do
+        printf "* $domain\n" >> $MS_REPORT
+    done
+    printf "\n" >> $MS_REPORT
+else
+    printf "No domains with MX record errors to report.\n\n" >> $MS_REPORT
+fi
+
+# Report name of report file
+printf "The report has been written to file $MS_REPORT.\n"
+
+# Possibility to send report by email (if needed)
+if [[ -n "$EMAILTO" ]]; then
+    # Email address option given
+    ebayemail="$EMAILTO"
+    create_email
+    exit 0
+else
+    # No email address given, kicking off option to send anyway
+    printf "Do you wish to send it to someone by email?\n"
+    select yn in "Yes" "No"; do
+        case $yn in
+            Yes )     read -p "Please enter the email address to send the report to: " ebayemail;
+                      create_email;
+                      break;;
+            No )      printf "\n"; 
+                      break;;
+        esac
+    done
+fi
+
+# Remove the temp file and exit
+remove_tmp
+exit 0
+
+###
+# END
+###
