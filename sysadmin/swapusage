@@ -1,0 +1,45 @@
+#!/bin/bash
+# Get current swap (and memory) usage for all running processes
+# Erik Ljungstrom 27/05/2011
+# Modified by Mikko Rantalainen 2012-08-09
+# Further improved by John gerritse
+#
+# Ref: http://stackoverflow.com/questions/479953/how-to-find-out-which-processes-are-swapping-in-linux
+#
+
+# Test if swap is in use
+SWAPINUSE=$(free k | awk '/^Swap/ {print $3}')
+if [[ "$SWAPINUSE" -eq 0 ]]; then
+    printf "Swap is not in use.\n" 1>&2
+    exit 0
+fi
+
+# This script is only useful if run as root
+if [[ $EUID -ne 0 ]]; then
+   printf "This script must be run as root!\n" 1>&2
+   exit 1
+fi
+
+# We need this variable
+SUM=0
+
+# Fetch all processes active
+for DIR in $(find /proc/ -maxdepth 1 -type d -regex "^/proc/[0-9]+")
+do
+    PID=$(basename $DIR)
+    PROGNAME=$(ps -p $PID -o comm --no-headers)
+    MEMUSAGE=$(ps -p $PID -orss=,args= | awk '{print $1}')
+    # Get the smaps info
+    for SWAP in $(grep '^Swap' $DIR/smaps 2>/dev/null | awk '{print $2}')
+    do
+        let SUM=$SUM+$SWAP       # in case swap is an empty string
+    done
+    # Only display lines of processes that use swap and add memory usage
+    [ "$SUM" -gt 0 ] && printf "PID $PID swapped \t$SUM KB       \t $MEMUSAGE B            \t($PROGNAME)\n"
+    # reset SUM
+    SUM=0
+done | sort -nk 4    # sorting the results by swap usage!
+printf "Swap used: $SWAPINUSE KB\n\n"
+
+# End
+###
