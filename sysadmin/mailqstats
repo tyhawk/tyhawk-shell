@@ -2,8 +2,8 @@
 ###########################################################################
 # mailqstats - Mailq statistical analysis
 ###########################################################################
-# (c) 2013/2014 by John Gerritse 
-# Version 20140320
+# (c) 2013/2014 by John Gerritse
+# Version 20140323
 ###########################################################################
 
 # Know thyself
@@ -34,7 +34,7 @@ usage() {
     printf "  -e EMAILADDRESS       Specify an email address to send the report to.\n\n"
     printf " The -r and -e options are both optional!\n"
     printf " When running $PROGNAME non-interactively, always use -e.\n"
-}   
+}    
 
 ###
 # The actual script
@@ -52,7 +52,7 @@ while getopts ":r:e:h" opt; do
 done
 shift $(($OPTIND - 1))
 
-# Create temp file
+# Create temp file and set colours
 create_tmp
 
 printf "Starting analysis of the current queue.\n"
@@ -74,24 +74,26 @@ fi
 EMAILQ=$(cat $TEMP_FILE|awk '/^-- /{ print $5 }')
 
 # Count suspended emails
-SUSPENDED=$(cat $TEMP_FILE|grep -c '^(delivery temporarily suspended:')
+SUSPENDED=$(grep -c '^(delivery temporarily suspended:' $TEMP_FILE)
 
 # Count time-outs
-SUS_TIMEOUT=$(cat $TEMP_FILE|grep -c '^(delivery temporarily suspended:')
+SUS_TIMEOUT=$(grep -c '^(delivery temporarily suspended:' $TEMP_FILE)
 SUS_TIMEOUT_DOMS=( $(cat $TEMP_FILE|grep '^(delivery temporarily suspended:' | awk '/Connection timed out\)/ { print $6 }' | cut -d '[' -f 1 | sort -u) )
 
 # Count refused to talk to me
-SUS_MAXCONNECT=$(cat $TEMP_FILE|grep '^(delivery temporarily suspended:'|grep -c 'refused to talk to me')
+SUS_MAXCONNECT=$(grep '^(delivery temporarily suspended:' $TEMP_FILE|grep -c 'refused to talk to me')
 SUS_MAXCONNECT_DOMS=( $(cat $TEMP_FILE|grep '^(delivery temporarily suspended:' | awk '/refused to talk to me/ { print $5 }' | cut -d '[' -f 1 | sort -u) )
 
 # Count too many recipients errors
-TOOMANYRECIPIENTS=$(cat $TEMP_FILE|grep -c 'too many recipients from')
+TOOMANYRECIPIENTS=$(grep -c 'too many recipients from' $TEMP_FILE)
 TOOMANYRECIPIENTS_DOMS=( $(cat $TEMP_FILE|grep 'too many recipients from'|awk -F "[" '{print $1}'|tr -d "^(host "|sort -u) )
 
 # MX record errors
-MX_ERRORS=$(cat $TEMP_FILE|grep -c '(Host or domain name not found.')
-MX_ERRORS_DOMS=( $(cat $TEMP_FILE|grep '(Host or domain name not found.'|awk '{ print $11 }'|tr -d "^name="|sort -u) )
+MX_ERRORS=$(grep -c '(Host or domain name not found.' $TEMP_FILE)
+MX_ERRORS_DOMS=( $(cat $TEMP_FILE|awk '/\(Host or domain name not found./ {print $11}'|tr -d "^name="|sort -u) )
 
+# Full email boxes
+FULL_EMAILBOXES=( $(cat $TEMP_FILE|awk '/would exceed mailbox quota/ {print $7}'|tr -d '<'|tr -d '>'|sort -u) )
 
 # I will print the report to screen and file ($MS_LOG)
 MS_REPORT="$HOME/mailqstats.report"
@@ -119,6 +121,7 @@ printf "Emails with time-outs:\t\t\t$SUS_TIMEOUT\n" >> $MS_REPORT
 printf "Emails with max connections:\t\t$SUS_MAXCONNECT\n" >> $MS_REPORT
 printf "Emails with too many recipients:\t$TOOMANYRECIPIENTS\n" >> $MS_REPORT
 printf "Emails with MX record errors:\t\t$MX_ERRORS\n" >> $MS_REPORT
+printf "Emailboxes that are full:\t\t${#FULL_EMAILBOXES[*]}\n" >> $MS_REPORT
 printf "Domains with time-outs:\t\t\t${#SUS_TIMEOUT_DOMS[*]}\n" >> $MS_REPORT
 printf "Domains with max connections:\t\t${#SUS_MAXCONNECT_DOMS[*]}\n" >> $MS_REPORT
 printf "Domains with too many recipients:\t${#TOOMANYRECIPIENTS_DOMS[*]}\n" >> $MS_REPORT
@@ -172,8 +175,21 @@ else
     printf "No domains with MX record errors to report.\n\n" >> $MS_REPORT
 fi
 
+# Email boxes that are full
+if [[ ${#FULL_EMAILBOXES[*]} -gt 0 ]]; then
+    printf "Email boxes that are full are:\n" >> $MS_REPORT
+    for emailbox in "${FULL_EMAILBOXES[@]}"
+    do
+        emailboxcount=$(grep -c $emailbox $TEMP_FILE)
+        printf "* $emailbox: $emailboxcount emails in the queue\n" >> $MS_REPORT
+    done
+    printf "\n" >> $MS_REPORT
+else
+    printf "There is no email stuck in the queue due to a full emailbox.\n\n" >> $MS_REPORT
+fi    
+
 # Report name of report file
-printf "The report has been written to file $MS_REPORT.\n"
+printf "The report has been written to file $MS_REPORT\n"
 
 # Possibility to send report by email (if needed)
 if [[ -n "$EMAILTO" ]]; then
