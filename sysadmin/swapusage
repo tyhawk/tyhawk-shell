@@ -36,16 +36,10 @@ shift $(($OPTIND - 1))
 
 # Test if swap is in use
 SWAPINUSE=$(free k | awk '/^Swap/ {print $3}')
-if [[ "$SWAPINUSE" -eq 0 ]]; then
-    printf "Swap is not in use.\n" 1>&2
-    exit 0
-fi
+[[ "$SWAPINUSE" -eq 0 ]] && printf "Swap is not in use.\n" 1>&2; exit 0
 
 # This script is only useful if run as root
-if [[ $EUID -ne 0 ]]; then
-   printf "This script must be run as root!\n" 1>&2
-   exit 1
-fi
+[[ $EUID -ne 0 ]] && printf "This script must be run as root!\n" 1>&2; exit 1
 
 # We need this variable
 SUM=0
@@ -62,7 +56,7 @@ do
         let SUM=$SUM+$SWAP       # in case swap is an empty string
     done
     # Only display lines of processes that use swap and add memory usage
-    [ "$SUM" -gt 0 ] && printf "PID $PID swapped \t$SUM KB       \t $(($MEMUSAGE / 10**3)) KB            \t($PROGNAME)\n"
+    [[ "$SUM" -gt 0 ]] && printf "PID $PID swapped \t$SUM KB       \t $(($MEMUSAGE / 10**3)) KB            \t($PROGNAME)\n"
     # reset SUM
     SUM=0
 done | sort -nk $SORTOPT
