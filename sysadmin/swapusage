@@ -5,7 +5,34 @@
 # Further improved by John gerritse
 #
 # Ref: http://stackoverflow.com/questions/479953/how-to-find-out-which-processes-are-swapping-in-linux
-#
+
+###
+# Functions
+###
+usage() {
+    printf "Usage: $PROGNAME [options]\n\n"
+    printf "Options:\n"
+    printf "  -h  Show this help message and exit.\n"
+    printf "  -s  Sort output by swap usage (default).\n"
+    printf "  -m  Sort output by memory usage.\n"
+}
+
+###
+# The actual script
+###
+SORTOPT="4" # This is the default
+
+# Get the command line options TODO only one option possible!
+while getopts "hsm" opt
+do
+    case $opt in
+	h  )  usage; exit 0 ;;
+        s  )  SORTOPT="4"; break ;;
+        m  )  SORTOPT="6"; break ;;
+        *  )  printf "ERROR! Unknown option: -$OPTARG\n" >&2; exit 1;;
+    esac
+done
+shift $(($OPTIND - 1))
 
 # Test if swap is in use
 SWAPINUSE=$(free k | awk '/^Swap/ {print $3}')
@@ -27,18 +54,18 @@ SUM=0
 for DIR in $(find /proc/ -maxdepth 1 -type d -regex "^/proc/[0-9]+")
 do
     PID=$(basename $DIR)
-    PROGNAME=$(ps -p $PID -o comm --no-headers)
-    MEMUSAGE=$(ps -p $PID -orss=,args= | awk '{print $1}')
+    PROGNAME=$(ps -p $PID -o comm=)
+    MEMUSAGE=$(ps -p $PID -o rss=) # TODO recalculate to kb! -> done in the printf below
     # Get the smaps info
     for SWAP in $(grep '^Swap' $DIR/smaps 2>/dev/null | awk '{print $2}')
     do
         let SUM=$SUM+$SWAP       # in case swap is an empty string
     done
     # Only display lines of processes that use swap and add memory usage
-    [ "$SUM" -gt 0 ] && printf "PID $PID swapped \t$SUM KB       \t $MEMUSAGE B            \t($PROGNAME)\n"
+    [ "$SUM" -gt 0 ] && printf "PID $PID swapped \t$SUM KB       \t $(($MEMUSAGE / 10**3)) KB            \t($PROGNAME)\n"
     # reset SUM
     SUM=0
-done | sort -nk 4    # sorting the results by swap usage!
+done | sort -nk $SORTOPT
 printf "Swap used: $SWAPINUSE KB\n\n"
 
 # End
