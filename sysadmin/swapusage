@@ -22,7 +22,7 @@ usage() {
 ###
 SORTOPT="4" # This is the default
 
-# Get the command line options TODO only one option possible!
+# Get the command line options
 while getopts "hsm" opt
 do
     case $opt in
@@ -36,10 +36,16 @@ shift $(($OPTIND - 1))
 
 # Test if swap is in use
 SWAPINUSE=$(free k | awk '/^Swap/ {print $3}')
-[[ "$SWAPINUSE" -eq 0 ]] && printf "Swap is not in use.\n" 1>&2; exit 0
+if [[ "$SWAPINUSE" -eq 0 ]]; then
+	printf "Swap is not in use.\n" 1>&2
+	exit 0
+fi
 
 # This script is only useful if run as root
-[[ $EUID -ne 0 ]] && printf "This script must be run as root!\n" 1>&2; exit 1
+if [[ $EUID -ne 0 ]]; then
+	printf "This script must be run as root!\n" 1>&2
+	exit 1
+fi
 
 # We need this variable
 SUM=0
