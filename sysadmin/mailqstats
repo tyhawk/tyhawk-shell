@@ -3,7 +3,7 @@
 # mailqstats - Mailq statistical analysis
 ###########################################################################
 # (c) 2013/2014 by John Gerritse
-# Version 20140323
+# Version 20140328
 ###########################################################################
 
 # Know thyself
@@ -95,6 +95,9 @@ MX_ERRORS_DOMS=( $(cat $TEMP_FILE|awk '/\(Host or domain name not found./ {print
 # Full email boxes
 FULL_EMAILBOXES=( $(cat $TEMP_FILE|awk '/would exceed mailbox quota/ {print $7}'|tr -d '<'|tr -d '>'|sort -u) )
 
+# Mail transport unavailable
+TRANSPORT_UNAVAIL=$(grep "mail transport unavailable" $TEMP_FILE | wc -l)
+
 # I will print the report to screen and file ($MS_LOG)
 MS_REPORT="$HOME/mailqstats.report"
 
@@ -121,6 +124,7 @@ printf "Emails with time-outs:\t\t\t$SUS_TIMEOUT\n" >> $MS_REPORT
 printf "Emails with max connections:\t\t$SUS_MAXCONNECT\n" >> $MS_REPORT
 printf "Emails with too many recipients:\t$TOOMANYRECIPIENTS\n" >> $MS_REPORT
 printf "Emails with MX record errors:\t\t$MX_ERRORS\n" >> $MS_REPORT
+printf "Emails with mail transport unavailable:\t$TRANSPORT_UNAVAIL\n" >> $MS_REPORT
 printf "Emailboxes that are full:\t\t${#FULL_EMAILBOXES[*]}\n" >> $MS_REPORT
 printf "Domains with time-outs:\t\t\t${#SUS_TIMEOUT_DOMS[*]}\n" >> $MS_REPORT
 printf "Domains with max connections:\t\t${#SUS_MAXCONNECT_DOMS[*]}\n" >> $MS_REPORT

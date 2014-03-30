@@ -22,7 +22,7 @@ usage() {
 ###
 SORTOPT="4" # This is the default
 
-# Get the command line options TODO only one option possible!
+# Get the command line options
 while getopts "hsm" opt
 do
     case $opt in
@@ -36,10 +36,10 @@ shift $(($OPTIND - 1))
 
 # Test if swap is in use
 SWAPINUSE=$(free k | awk '/^Swap/ {print $3}')
-[[ "$SWAPINUSE" -eq 0 ]] && printf "Swap is not in use.\n" 1>&2; exit 0
+[[ "$SWAPINUSE" -eq 0 ]] && { printf "Swap is not in use.\n" 1>&2; exit 0; }
 
 # This script is only useful if run as root
-[[ $EUID -ne 0 ]] && printf "This script must be run as root!\n" 1>&2; exit 1
+[[ "$EUID" -ne 0 ]] && { printf "This script must be run as root!\n" 1>&2; exit 1; }
 
 # We need this variable
 SUM=0
@@ -49,7 +49,7 @@ for DIR in $(find /proc/ -maxdepth 1 -type d -regex "^/proc/[0-9]+")
 do
     PID=$(basename $DIR)
     PROGNAME=$(ps -p $PID -o comm=)
-    MEMUSAGE=$(ps -p $PID -o rss=) # TODO recalculate to kb! -> done in the printf below
+    MEMUSAGE=$(ps -p $PID -o rss=) 
     # Get the smaps info
     for SWAP in $(grep '^Swap' $DIR/smaps 2>/dev/null | awk '{print $2}')
     do
