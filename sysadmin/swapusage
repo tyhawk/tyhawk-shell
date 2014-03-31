@@ -56,7 +56,7 @@ do
         let SUM=$SUM+$SWAP       # in case swap is an empty string
     done
     # Only display lines of processes that use swap and add memory usage
-    [[ "$SUM" -gt 0 ]] && printf "PID $PID swapped \t$SUM KB       \t $(($MEMUSAGE / 10**3)) KB            \t($PROGNAME)\n"
+    [[ "$SUM" -gt 0 ]] && printf "PID $PID swapped \t$SUM KB     \t $(($MEMUSAGE / 10**3)) KB            \t($PROGNAME)\n"
     # reset SUM
     SUM=0
 done | sort -nk $SORTOPT
