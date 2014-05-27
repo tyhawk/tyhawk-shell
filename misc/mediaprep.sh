@@ -168,7 +168,7 @@ clean_transcode
 
 # check for files lingering in the 05_toStaging folder and rsync those first to regain disk space
 printf "\n${YELLOW}Staging directory check.${NORMAL}\n"
-uploadfile=( $(find $staging/ -type f -name '*.mkv' -exec basename {} \;) )
+uploadfile=( $(find $staging/ -type f -name '*.mkv' -exec basename {} \; | sort -u) )
 uploadfilecount="${#uploadfile[@]}"
 if [[ "$uploadfilecount" -gt 0 ]]; then
     if [[ "$uploadfilecount" -eq 1 ]]; then
