@@ -192,6 +192,7 @@ if [[ "$uploadfilecount" -gt 0 ]]; then
                 printf " Transfer completed: "; do_ok
             fi
         done
+        printf "\n\n"
     else
         do_error
     fi
