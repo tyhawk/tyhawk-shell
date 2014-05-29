@@ -23,11 +23,6 @@ tmpfiles="$rootdir/02_TempFiles"
 finished="$rootdir/03_Finished"
 dumpster="$rootdir/99_Dumpster"
 
-subtitles="$rootdir/03_Subtitles"
-mkvready="$rootdir/04_MKVready"
-staging="$rootdir/05_toStaging"
-dumpster="$rootdir/99_RawMaterials"
-
 # Colours... oooh pretty!
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
