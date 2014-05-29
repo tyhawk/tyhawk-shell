@@ -134,7 +134,7 @@ printf "#  #  #  #####   #    #     #    #    # ######   #    #  #####   #    #\
 printf "#     #  #       #    #     #    ###### #        #####   #       #####\n"
 printf "#     #  #       #    #     #    #    # #        #   #   #       #\n"
 printf "#     #  ######  #####      #    #    # #        #    #  ######  #\n"
-printf "\n   Create transcoded MKVs from raw video files${NORMAL}\n"
+printf "\n         Create transcoded MKVs from raw video files${NORMAL}\n"
 
 # Dependency check
 hash HandBrakeCLI 2>/dev/null || { printf "Could not find handbrake-cli.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
@@ -348,7 +348,7 @@ do
     step="3. Merging"
     # Announce step 3
     printf " ${YELLOW}Step 3${NORMAL} - Merging video and subtitle.\n"
-    mkvfile="$finshed/$mediafile.mkv"
+    mkvfile="$finished/$mediafile.mkv"
     # Make sure all files required are present
     if [[ "$subsneeded" = "YES" ]]; then
         printf "  Subtitle file present: "
