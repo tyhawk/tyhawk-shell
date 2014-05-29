@@ -7,20 +7,22 @@
 # Create a fully transcoded MKV file of TV episodes & Movies in one script
 #
 # Directory Structure:
-# 01_Preparation    - Raw files ready to be checked and prepared
-# 02_Transcode      - Properly named files ready for transcoding
-# 03_Subtitles      - Checked UTF-8 subtitle files
-# 04_MKVready       - Transcoded files ready to become MKV's
-# 05_toStaging      - Completed MKV files, ready for upload to Staging
-# 99_RawMaterials   - Raw files ready for removal
+# 01_Queue          - Properly named files ready for transcoding
+# 02_TempFiles      - Temporary files for transcoding
+# 03_Finished       - Completed MKV files, ready for upload to server
+# 99_Dumpster   - Processed queue files ready for removal
 #
 # TV file syntax:       some.tv.show-s01e09-Name_of_the_Episode.ext
 # Movie file syntax:    some.movie.name-2014.ext
 #############################################################################
 
 # Variables
-rootdir="$HOME/Videos/XBMC"
-transcode="$rootdir/02_Transcode"
+rootdir="$HOME/Videos"
+queue="$rootdir/01_Queue"
+tmpfiles="$rootdir/02_TempFiles"
+finished="$rootdir/03_Finished"
+dumpster="$rootdir/99_Dumpster"
+
 subtitles="$rootdir/03_Subtitles"
 mkvready="$rootdir/04_MKVready"
 staging="$rootdir/05_toStaging"
@@ -79,32 +81,16 @@ transcode_result() {
     fi
 }
 
-clean_subs() {
-    ressubs=( $(find $subtitles/ -type f -exec basename {} \;) )
-    printf " Checking for files in $subtitles: "
-    if [[ "${#ressubs[@]}" -gt 0 ]]; then
+clean_tmpfiles() {
+    stalefiles=( $(find $tmpfiles/ -type f -exec basename {} \;) )
+    printf " Checking for files in $tmpfiles: "
+    if [[ "${#stalefiles[@]}" -gt 0 ]]; then
         printf "[${RED}FOUND${NORMAL}]\n"
-        for resfile in "${ressubs[@]}"
+        for resfile in "${stalefiles[@]}"
         do
             printf " Removing file $resfile: "
             trap do_error 1
-            rm -f "$subtitles/$resfile" && do_ok
-        done
-    else
-        printf "[${GREEN}CLEAN${NORMAL}]\n"
-    fi
-}
-
-clean_transcode() {
-    restrans=( $(find $mkvready/ -type f -exec basename {} \;) )
-    printf " Checking for files in $mkvready... "
-    if [[ "${#restrans[@]}" -gt 0 ]]; then
-        printf "[${YELLOW}FOUND${NORMAL}]\n"
-        for resfile in "${restrans[@]}"
-        do
-            printf " Removing file $resfile: "
-            trap do_error 1
-            rm -f "$subtitles/$resfile" && do_ok
+            rm -f "$tmpfiles/$resfile" && do_ok
         done
     else
         printf "[${GREEN}CLEAN${NORMAL}]\n"
@@ -113,8 +99,7 @@ clean_transcode() {
 
 cleanup() {
     printf " Cleaning up temporary files.\n"
-    clean_subs
-    clean_transcode
+    clean_tmpfiles
 }
 
 cleanup_quick() {
@@ -132,7 +117,7 @@ breaktheloop() {
     if [[ "$breakloop" = "YES" ]]; then
         # We move onto the next entry in the loop
         printf "Processing of \"${BRIGHT}$title${NORMAL}\" [${RED}FAILED${NORMAL}]\n"
-        printf "Step $step [${RED}FAILED${NORMAL}]\n"
+        printf "Step $step [${RED}FAILED${NORMAL}]\n\n"
         continue
     fi
 }
@@ -145,11 +130,6 @@ breaktheloop() {
 trap exit_term TERM HUP
 trap exit_int INT
 
-# Dependency check
-hash HandBrakeCLI 2>/dev/null || { printf "Could not find handbrake-cli.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
-hash mkvmerge 2>/dev/null || { printf "Could not find mkvmerge.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
-hash rsync 2>/dev/null || { printf "Could not find rsync.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
-
 # Clear screen en print 'logo'
 clear
 printf "${BLUE}${BRIGHT}#     #                                 ######\n"
@@ -161,14 +141,40 @@ printf "#     #  #       #    #     #    #    # #        #   #   #       #\n"
 printf "#     #  ######  #####      #    #    # #        #    #  ######  #\n"
 printf "\n   Create transcoded MKVs from raw video files${NORMAL}\n"
 
+# Dependency check
+hash HandBrakeCLI 2>/dev/null || { printf "Could not find handbrake-cli.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
+hash mkvmerge 2>/dev/null || { printf "Could not find mkvmerge.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
+hash rsync 2>/dev/null || { printf "Could not find rsync.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
+
+# File system check
+if [[ -d "$rootdir" ]]; then
+    printf "Directory $rootdir not found: "; do_error
+    exit 1
+fi
+if [[ -d "$queue" ]]; then
+    printf "Directory $queue not found: "; do_error
+    exit 1
+fi
+if [[ -d "$tmpfiles" ]]; then
+    printf "Directory $tmpfiles not found: "; do_error
+    exit 1
+fi
+if [[ -d "$finished" ]]; then
+    printf "Directory $finished not found: "; do_error
+    exit 1
+fi
+if [[ -d "$dumpster" ]]; then
+    printf "Directory $dumpster not found: "; do_error
+    exit 1
+fi
+
 # Next, clean out any files from directories that should be empty
 printf "\n${YELLOW}Residual file check.${NORMAL}\n"
-clean_subs
-clean_transcode
+clean_tmpfiles
 
 # check for files lingering in the 05_toStaging folder and rsync those first to regain disk space
-printf "\n${YELLOW}Staging directory check.${NORMAL}\n"
-uploadfile=( $(find $staging/ -type f -name '*.mkv' -exec basename {} \; | sort -u) )
+printf "\n${YELLOW}Finished directory check.${NORMAL}\n"
+uploadfile=( $(find $finished/ -type f -name '*.mkv' -exec basename {} \; | sort -u) )
 uploadfilecount="${#uploadfile[@]}"
 if [[ "$uploadfilecount" -gt 0 ]]; then
     if [[ "$uploadfilecount" -eq 1 ]]; then
@@ -183,7 +189,7 @@ if [[ "$uploadfilecount" -gt 0 ]]; then
         for mkvfile in "${uploadfile[@]}"
         do
             printf " Moving file $mkvfile to Staging directory on server:\n"
-            rsync --update --perms --times --progress --human-readable --compress --remove-source-files --partial $staging/$mkvfile $fileserver:~/Staging/
+            rsync --update --perms --times --progress --human-readable --compress --remove-source-files --partial $finished/$mkvfile $fileserver:~/Staging/
             if [[ "$?" -gt 0 ]]; then
                 printf " Transfer completed: "; do_error
                 # Break from the loop / do not continue with next steps for this file (I hope)
@@ -203,7 +209,7 @@ fi
 # Check for files ready for processing
 printf "\n${YELLOW}Processable files check.${NORMAL}\n"
 printf " Number of files ready for processing: "
-filestodo=( $(find $transcode/ -type f -exec basename {} \; | sed 's/\.[^.]*$//' | sort -u) )
+filestodo=( $(find $queue/ -type f -exec basename {} \; | sed 's/\.[^.]*$//' | sort -u) )
 filestodocount="${#filestodo[@]}"
 printf "$filestodocount\n"
 if [[ "$filestodocount" -eq 0 ]]; then
@@ -220,7 +226,7 @@ do
     breakloop="NO" # We use this to break from the loop after a step if we need to
     # Determine movie or tv show
     step="0. Title"
-    if [[ -n $(find $transcode/ -name '*-s??e??-*' | grep "$mediafile") ]]; then
+    if [[ -n $(find $queue/ -name '*-s??e??-*' | grep "$mediafile") ]]; then
         mediatype="TV"
         # Extract info from filename
         showname_raw=$(echo "$mediafile" | cut --delimiter=\- --fields=1)
@@ -233,7 +239,7 @@ do
         eptitle="${showepname//_/ }"
         # Setting the title
         title="$showname - Season $season Episode $episode - $eptitle"
-    elif [[ -n $(find $transcode/ -name "*-????.*" | grep "$mediafile") ]]; then
+    elif [[ -n $(find $queue/ -name "*-????.*" | grep "$mediafile") ]]; then
         mediatype="Movie"
         # Extract info from filename
         moviename_raw=$(echo "$mediafile" | cut --delimiter=\- --fields=1)
@@ -246,7 +252,7 @@ do
     # If mediatype is still empty, we cannot process the file.
     if [[ -z "$mediatype" ]]; then
         # Moving onto the next file
-        printf "Skipping fileset ${RED}$mediafile${NORMAL}\n"
+        printf "Skipping fileset ${RED}$mediafile${NORMAL}\n\n"
         breakloop="YES"
     else
         # Announcing processing
@@ -265,24 +271,24 @@ do
     # If we do need subs, we will check them
     if [[ "$subsneeded" = "YES" ]]; then
         # Determine if this is an Advanced Substation Alpha subtitle or SRT
-        if [[ -e $transcode/$mediafile.ass ]]; then
+        if [[ -e $queue/$mediafile.ass ]]; then
             subext="ssa"
             subformat="Advanced Substation Alpha"
-        elif [[ -e $transcode/$mediafile.srt ]]; then
+        elif [[ -e $queue/$mediafile.srt ]]; then
             subext="srt"
             subformat="SubRip"
         else
             printf "  Subtitle file not found: " ; do_error
         fi
         # Check if it is UTF-8 encoded. Extra check in case there was no subtitle file
-        subtitle_raw="$transcode/$mediafile.$subext"
+        subtitle_raw="$queue/$mediafile.$subext"
         if [[ -e "$subtitle_raw" ]]; then
             printf "  Subtitle type ($subformat): "; do_ok
             subcharset=$(file -ib $subtitle_raw | awk '{ print $2 }' | cut --delimiter=\= --fields=2)
         fi
         if [[ "$subcharset" = "utf-8" ]]; then
             printf "  Subtitle charset (UTF-8): "; do_ok
-            subtitlefile="$subtitles/$mediafile.$subext"
+            subtitlefile="$tmpfiles/$mediafile.$subext"
             printf "  Placing approved subtitle file: "
             trap do_error 1
             cp $subtitle_raw $subtitlefile && do_ok
@@ -300,8 +306,8 @@ do
     # Announce step 2
     printf " ${YELLOW}Step 2${NORMAL} - Transcoding video.\n"
     # Set input file & output file
-    hbinfile=$(find $transcode/ -name "$mediafile.*" -type f | grep -Ev "ass|srt")
-    hboutfile="$mkvready/$mediafile.mp4"
+    hbinfile=$(find $queue/ -name "$mediafile.*" -type f | grep -Ev "ass|srt")
+    hboutfile="$tmpfiles/$mediafile.mp4"
     # Transcode depending on certain file properties
     if [[ "$mediatype" = "Movie" ]]; then
         # It's a movie! Let's transcode it!
@@ -313,6 +319,7 @@ do
             --deinterlace="fast" 2> /dev/null
         transcode_result
     elif [[ "$mediatype" = "TV" ]]; then
+        hboutfile="$tmpfiles/$showname_raw-$showepnum.mp4"
         # First we check if this is a known animation TV show
         for cartoon in "${tvanimation[@]}"; do [[ "$cartoon" = "$showname_raw" ]] && animation="YES"; done
         if [[ "$animation" = "YES" ]]; then
@@ -323,7 +330,6 @@ do
                 --audio 1 --aencoder faac --ab 160 --mixdown stereo \
                 --maxWidth 1024 --loose-anamorphic \
                 --deinterlace="fast" --deblock 2> /dev/null
-        transcode_result
             transcode_result
         elif [[ "$animation" = "NO" ]]; then
             # It's a regular TV Show! Let's transcode it!
@@ -347,7 +353,7 @@ do
     step="3. Merging"
     # Announce step 3
     printf " ${YELLOW}Step 3${NORMAL} - Merging video and subtitle.\n"
-    mkvfile="$staging/$mediafile.mkv"
+    mkvfile="$finshed/$mediafile.mkv"
     # Make sure all files required are present
     if [[ "$subsneeded" = "YES" ]]; then
         printf "  Subtitle file present: "
