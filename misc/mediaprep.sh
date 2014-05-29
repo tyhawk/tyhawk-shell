@@ -368,13 +368,13 @@ do
     # All files here, we are good to go!
     if [[ "$subsneeded" = "NO" ]]; then
         printf "  Merging video: "
-        trap do_error 1
+        trap do_error 1 2
         mkvmerge --quiet --output $mkvfile --title "$title" \
             --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile
         cleanup_quick
     else
         printf "  Merging video and subtitles: "
-        trap do_error 1
+        trap do_error 1 2
         mkvmerge --quiet --output $mkvfile --title "$title" \
             --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile \
             --language 0:dut --default-track 0 --sub-charset 0:UTF-8 $subtitlefile && do_ok
