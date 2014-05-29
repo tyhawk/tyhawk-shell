@@ -17,7 +17,7 @@
 #############################################################################
 
 # Variables
-rootdir="$HOME/Videos"
+rootdir="$HOME/XBMC"
 queue="$rootdir/01_Queue"
 tmpfiles="$rootdir/02_TempFiles"
 finished="$rootdir/03_Finished"
@@ -142,23 +142,23 @@ hash mkvmerge 2>/dev/null || { printf "Could not find mkvmerge.\nPlease make sur
 hash rsync 2>/dev/null || { printf "Could not find rsync.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
 
 # File system check
-if [[ -d "$rootdir" ]]; then
+if [[ !-d "$rootdir" ]]; then
     printf "Directory $rootdir not found: "; do_error
     exit 1
 fi
-if [[ -d "$queue" ]]; then
+if [[ !-d "$queue" ]]; then
     printf "Directory $queue not found: "; do_error
     exit 1
 fi
-if [[ -d "$tmpfiles" ]]; then
+if [[ !-d "$tmpfiles" ]]; then
     printf "Directory $tmpfiles not found: "; do_error
     exit 1
 fi
-if [[ -d "$finished" ]]; then
+if [[ !-d "$finished" ]]; then
     printf "Directory $finished not found: "; do_error
     exit 1
 fi
-if [[ -d "$dumpster" ]]; then
+if [[ !-d "$dumpster" ]]; then
     printf "Directory $dumpster not found: "; do_error
     exit 1
 fi
