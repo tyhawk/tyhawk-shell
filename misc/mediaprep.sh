@@ -307,7 +307,7 @@ do
     if [[ "$mediatype" = "Movie" ]]; then
         # It's a movie! Let's transcode it!
         HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
-            --x264-preset="veryfast" --encoder x264 --x264-tune film \
+            --x264-preset="medium" --encoder x264 --x264-tune film \
             --quality 20 --rate 25 --cfr \
             --audio 1 --aencoder faac --ab 160 --mixdown stereo \
             --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
@@ -320,7 +320,7 @@ do
         if [[ "$animation" = "YES" ]]; then
             # Its an animated TV show! Let's transcode it!
             HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
-                --x264-preset="veryfast" --encoder x264 --x264-tune animation \
+                --x264-preset="medium" --encoder x264 --x264-tune animation \
                 --quality 20 --rate 25 --cfr \
                 --audio 1 --aencoder faac --ab 160 --mixdown stereo \
                 --maxWidth 1024 --loose-anamorphic \
@@ -329,7 +329,7 @@ do
         elif [[ "$animation" = "NO" ]]; then
             # It's a regular TV Show! Let's transcode it!
             HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
-                --x264-preset="veryfast" --encoder x264 --x264-tune film \
+                --x264-preset="medium" --encoder x264 --x264-tune film \
                 --quality 20 --rate 25 --cfr \
                 --audio 1 --aencoder faac --ab 160 --mixdown stereo \
                 --maxWidth 1024 --loose-anamorphic \
