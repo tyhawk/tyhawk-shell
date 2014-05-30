@@ -325,7 +325,6 @@ do
             transcode_result
         elif [[ "$animation" = "NO" ]]; then
             # It's a regular TV Show! Let's transcode it!
-            echo "HandBrakeCLI --input $hbinfile --output $hboutfile"
             HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
                 --x264-preset="veryfast" --encoder x264 --x264-tune film \
                 --quality 20 --rate 25 --cfr \
