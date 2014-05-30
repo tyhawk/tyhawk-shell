@@ -45,6 +45,7 @@ tvanimation=( "Tom.and.Jerry" "Looney.Tunes" )
 exit_int() {
     # Function to do a clean exit when an interrupt is trapped
     printf "${RED}Process aborted by user${NORMAL}\n"
+    break # break out of the loop
     cleanup
     exit 0
 }
@@ -52,6 +53,7 @@ exit_int() {
 exit_term() {
     # Function to do a clean exit when a termination is trapped
     echo "${RED}Process terminated${NORMAL}"
+    break # break out of the loop
     cleanup
     exit 1
 }
