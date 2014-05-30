@@ -45,16 +45,16 @@ tvanimation=( "Tom.and.Jerry" "Looney.Tunes" )
 exit_int() {
     # Function to do a clean exit when an interrupt is trapped
     printf "${RED}Process aborted by user${NORMAL}\n"
+    clean_tmpfiles
     break # break out of the loop
-    cleanup
     exit 0
 }
 
 exit_term() {
     # Function to do a clean exit when a termination is trapped
     echo "${RED}Process terminated${NORMAL}"
+    clean_tmpfiles
     break # break out of the loop
-    cleanup
     exit 1
 }
 
@@ -92,11 +92,6 @@ clean_tmpfiles() {
     else
         printf "[${GREEN}CLEAN${NORMAL}]\n"
     fi
-}
-
-cleanup() {
-    printf " Cleaning up temporary files.\n"
-    clean_tmpfiles
 }
 
 cleanup_quick() {
