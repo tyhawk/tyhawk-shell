@@ -16,6 +16,10 @@
 # Movie file syntax:    some.movie.name-2014.ext
 #############################################################################
 
+# TODO
+# - If Movie has no subs, assume Dutch movie and process
+# - HD profile for Cosmos (TV Show)
+
 # Variables
 rootdir="$HOME/XBMC"
 queue="$rootdir/01_Queue"
@@ -321,6 +325,15 @@ do
                 --quality 23 --rate 25 --cfr \
                 --audio 1 --aencoder faac --ab 160 --mixdown stereo \
                 --maxWidth 1024 --loose-anamorphic \
+                --deinterlace="fast" --deblock 2> /dev/null
+            transcode_result
+        elif [[ "$showname_raw" = "Cosmos.A.Space.Time.Odyssey" ]]; then
+            # I want to encode COSMOS at 720p
+            HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
+                --x264-preset="faster" --encoder x264 --x264-tune film \
+                --quality 23 --rate 25 --cfr \
+                --audio 1 --aencoder faac --ab 160 --mixdown stereo \
+                --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
                 --deinterlace="fast" --deblock 2> /dev/null
             transcode_result
         elif [[ "$animation" = "NO" ]]; then
