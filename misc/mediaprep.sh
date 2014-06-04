@@ -268,7 +268,7 @@ do
     if [[ "$subsneeded" = "YES" ]]; then
         # Determine if this is an Advanced Substation Alpha subtitle or SRT
         if [[ -e $queue/$mediafile.ass ]]; then
-            subext="ssa"
+            subext="ass"
             subformat="Advanced Substation Alpha"
         elif [[ -e $queue/$mediafile.srt ]]; then
             subext="srt"
