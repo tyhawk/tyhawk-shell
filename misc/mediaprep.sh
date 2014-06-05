@@ -13,7 +13,7 @@
 # 99_Dumpster   - Processed queue files ready for removal
 #
 # TV file syntax:       some.tv.show-s01e09-Name_of_the_Episode.ext
-# Movie file syntax:    some.movie.name-2014.ext
+# Movie file syntax:    some.movie.name-2014.ext (input syntax))
 #############################################################################
 
 # TODO
@@ -134,7 +134,7 @@ printf "#  #  #  #####   #    #     #    #    # ######   #    #  #####   #    #\
 printf "#     #  #       #    #     #    ###### #        #####   #       #####\n"
 printf "#     #  #       #    #     #    #    # #        #   #   #       #\n"
 printf "#     #  ######  #####      #    #    # #        #    #  ######  #\n"
-printf "\n         Create transcoded MKVs from raw video files${NORMAL}\n"
+printf "\n         Create transcoded MKVs from raw video files${NORMAL}\n\n"
 
 # Dependency check
 hash HandBrakeCLI 2>/dev/null || { printf "Could not find handbrake-cli.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }

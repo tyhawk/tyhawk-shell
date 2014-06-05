@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# automove - Automatic file distributor based on filename
+# automove - Automatic media file distributor based on filename
 ############################################################################
 # (c) 2014 - John Gerritse
 ############################################################################
@@ -8,11 +8,29 @@
 # Colours... oooh pretty!
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
+YELLOW=$(tput setaf 3)
+BLUE=$(tput setaf 4)
 NORMAL=$(tput sgr0)
+BRIGHT=$(tput bold)
 
+####
 # Functions
+####
+exit_int() {
+    # Function to do a clean exit when an interrupt is trapped
+    printf "${RED}Process aborted by user${NORMAL}\n"
+    exit 0
+}
+
+exit_term() {
+    # Function to do a clean exit when a termination is trapped
+    echo "${RED}Process terminated${NORMAL}"
+    exit 1
+}
+
 do_error() {
     printf "[${RED}ERR${NORMAL}]\n"
+    breakloop="YES"
 }
 
 do_ok() {
@@ -26,6 +44,24 @@ STAGING="$HOME/Staging"
 tvshowroot="/media/EHD01/Plex/TV-Shows"
 movieroot="/media/EHD02/Plex/Movies"
 
+####
+# The script itself
+####
+
+# Trap TERM, HUP, and INT signals and properly exit
+trap exit_term TERM HUP
+trap exit_int INT
+
+# Clear screen en print 'logo'
+clear
+printf "${BLUE}${BRIGHT}   ##    #    #   #####   ####   #    #   ####   #    #  ######\n"
+printf "  #  #   #    #     #    #    #  ##  ##  #    #  #    #  #\n"
+printf " #    #  #    #     #    #    #  # ## #  #    #  #    #  #####\n"
+printf " ######  #    #     #    #    #  #    #  #    #  #    #  #\n"
+printf " #    #  #    #     #    #    #  #    #  #    #   #  #   #\n"
+printf " #    #   ####      #     ####   #    #   ####     ##    ######\n"
+printf "\n     Move movie and tv-show files to the proper directory${NORMAL}\n\n"
+
 # Dependency check
 hash rsync 2>/dev/null || { printf "Could not find rsync.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
 
@@ -38,16 +74,6 @@ if [[ ! -d "$movieroot" ]]; then
     printf "Directory $movieroot not found: "; do_error
     exit 1
 fi
-
-   ##    #    #   #####   ####   #    #   ####   #    #  ######
-  #  #   #    #     #    #    #  ##  ##  #    #  #    #  #
- #    #  #    #     #    #    #  # ## #  #    #  #    #  #####
- ######  #    #     #    #    #  #    #  #    #  #    #  #
- #    #  #    #     #    #    #  #    #  #    #   #  #   #
- #    #   ####      #     ####   #    #   ####     ##    ######
-
-
-printf "Starting automove.\n"
 
 # First check if there are MKV files in the Staging dir
 if [[ $(find $STAGING/*mkv | wc -l) -eq 0 ]]; then
@@ -80,6 +106,7 @@ do
     else
         printf "  Transfer completed: "; do_ok
     fi
+    printf "\n#--------------------------------------------------------------#\n\n"
 done
 
 # Movies are easier, they all go into one directory
@@ -93,6 +120,8 @@ do
     else
         printf "  Transfer completed: "; do_ok
     fi
+    printf "\n${BLUE}#${YELLOW}--------------------------------------------------------------${BLUE}#${NORMAL}\n\n"
 done
 
+printf "${BLUE}${BRIGHT}ALL FILES MOVED. EXITING.${NORMAL}\n"
 ## END SCRIPT
