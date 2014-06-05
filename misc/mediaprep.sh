@@ -21,7 +21,7 @@
 # - HD profile for Cosmos (TV Show)
 
 # Variables
-rootdir="$HOME/XBMC"
+rootdir="$HOME/PLEX"
 queue="$rootdir/01_Queue"
 tmpfiles="$rootdir/02_TempFiles"
 finished="$rootdir/03_Finished"
