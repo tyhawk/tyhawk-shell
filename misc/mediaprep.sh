@@ -291,6 +291,7 @@ do
                 printf "  Subtitle file not found: " ; do_error
             fi
         fi
+        breaktheloop
         # Check if it is UTF-8 encoded. Extra check in case there was no subtitle file
         subtitle_raw="$queue/$mediafile.$subext"
         if [[ -e "$subtitle_raw" ]]; then
