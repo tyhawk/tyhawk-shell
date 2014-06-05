@@ -91,7 +91,7 @@ do
     showname=$(echo "$tvshowfile" | cut --delimiter=\- --fields=1)
     # Extract season as well
     showepnum=$(echo "$tvshowfile" | cut --delimiter=\- --fields=2)
-    season="$((${showepnum:1:2}))"
+    season="0$((${showepnum:1:2}))"  # temporary solution
     # Check if the location exists and if not, create it
     showlocation="$tvshowroot/$showname/Season$season"
     if [[ ! -d "$showlocation" ]]; then
