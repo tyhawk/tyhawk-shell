@@ -17,7 +17,16 @@
 #############################################################################
 
 # TODO
-# Nothing (now)
+# Add flags:    -f  Full processing (the default)
+#               -t  Transcode only. Do not mkvmerge
+#               -m  Mkvmerge only. Do not transcode
+#               -a  Set foreign audio language (override default)
+#               -s  Set subtitle language (override default)
+#
+# Add option:   mediaprep.sh [FLAG] [FILENAME] 
+#               Process single file only
+#
+# Move certain stuff into a conf file
 
 # Variables
 rootdir="$HOME/PLEX"
