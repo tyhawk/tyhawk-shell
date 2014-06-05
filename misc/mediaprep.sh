@@ -260,7 +260,7 @@ do
         breakloop="YES"
     else
         # Announcing processing
-        printf "\n\nStarting processing of \"${BRIGHT}$title${NORMAL}\"\n"
+        printf "\n\n${YELLOW}Starting processing of${NORMAL} \"${BRIGHT}$title${NORMAL}\"\n"
     fi
     #################################
     #### STEP 1 - Check subtitle ####
