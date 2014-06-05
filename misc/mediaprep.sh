@@ -17,8 +17,7 @@
 #############################################################################
 
 # TODO
-# - If Movie has no subs, assume Dutch movie and process
-# - HD profile for Cosmos (TV Show)
+# Nothing (now)
 
 # Variables
 rootdir="$HOME/PLEX"
