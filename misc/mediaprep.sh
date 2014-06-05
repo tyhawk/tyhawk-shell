@@ -274,7 +274,14 @@ do
             subext="srt"
             subformat="SubRip"
         else
-            printf "  Subtitle file not found: " ; do_error
+            # If media is a movie and there are no subs, its probably a Dutch movie
+            if [[ "$mediatype" = "Movie" ]]; then
+                printf "  Movie without subtitles found. Assuming Dutch film."
+                subsneeded="NO"
+            else
+                # No movie & no subs & no known Dutch TV Show: ERROR!
+                printf "  Subtitle file not found: " ; do_error
+            fi
         fi
         # Check if it is UTF-8 encoded. Extra check in case there was no subtitle file
         subtitle_raw="$queue/$mediafile.$subext"
@@ -358,7 +365,14 @@ do
     step="3. Merging"
     # Announce step 3
     printf " ${YELLOW}Step 3${NORMAL} - Merging video and subtitle.\n"
-    mkvfile="$finished/$mediafile.mkv"
+    # If media is a movie, I need to modify the ouput file a bit for Plex.
+    # Their library wants movies to look like this: some.movie(yyyy).mkv
+    # I prefer some.movie-(yyyy).mkv which also works fine.
+    if [[ "$mediatype" = "Movie" ]]; then
+        mkvfile="$finished/$moviename_raw-($movieyear).mkv"
+    else
+        mkvfile="$finished/$mediafile.mkv"
+    fi
     # Make sure all files required are present
     if [[ "$subsneeded" = "YES" ]]; then
         printf "  Subtitle file present: "
