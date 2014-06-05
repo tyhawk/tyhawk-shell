@@ -258,7 +258,7 @@ do
     #### STEP 1 - Check subtitle ####
     #################################
     step="1. Subtitle"
-    # First check if we need a subtitle (not for Dutch shows)
+    # First check if we need a subtitle (mostly Dutch shows)
     if [[ "$mediatype" = "TV" ]]; then
         for dutchshow in "${tvnosubs[@]}"; do [[ "$dutchshow" = "$showname_raw" ]] && subsneeded="NO"; done
     fi
@@ -279,7 +279,7 @@ do
                 printf "  Movie without subtitles found. Assuming Dutch film."
                 subsneeded="NO"
             else
-                # No movie & no subs & no known Dutch TV Show: ERROR!
+                # Not a movie & no subs found & not a show that requires no subs: ERROR!
                 printf "  Subtitle file not found: " ; do_error
             fi
         fi
