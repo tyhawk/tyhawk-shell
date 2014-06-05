@@ -105,7 +105,7 @@ do
     else
         printf "  Transfer completed: "; do_ok
     fi
-    printf "\n#--------------------------------------------------------------#\n\n"
+    printf "\n${BLUE}#${YELLOW}--------------------------------------------------------------${BLUE}#${NORMAL}\n\n"
 done
 
 # Movies are easier, they all go into one directory
