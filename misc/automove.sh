@@ -30,7 +30,6 @@ exit_term() {
 
 do_error() {
     printf "[${RED}ERR${NORMAL}]\n"
-    breakloop="YES"
 }
 
 do_ok() {
