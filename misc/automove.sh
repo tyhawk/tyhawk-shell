@@ -81,8 +81,8 @@ if [[ $(find $STAGING/*mkv | wc -l) -eq 0 ]]; then
 fi
 
 # Now we split them up into movies and tv shows
-tvshows=( $(basename "$(ls $STAGING/*-s..e..-*mkv)" ) )
-movies=( $(basename "$(ls $STAGING/*-\(....\).mkv)" ) )
+tvshows=( $(basename "$(ls $STAGING/*-s??e??-*mkv)" ) )
+movies=( $(basename "$(ls $STAGING/*-\(????\).mkv)" ) )
 
 # We copy the TV-Show to its proper directory one by one and automatically.
 for tvshowfile in "${tvshows[@]}"
