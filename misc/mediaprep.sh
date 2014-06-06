@@ -284,7 +284,7 @@ do
         else
             # If media is a movie and there are no subs, its probably a Dutch movie
             if [[ "$mediatype" = "Movie" ]]; then
-                printf "  Movie without subtitles found: assuming this is a Dutch film.\n"
+                printf "  Movie without subtitle file found: assuming this is a Dutch film.\n"
                 subsneeded="NO"
             else
                 # Not a movie & no subs found & not a show that requires no subs: ERROR!
