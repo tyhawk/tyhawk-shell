@@ -286,30 +286,32 @@ do
             if [[ "$mediatype" = "Movie" ]]; then
                 printf "  Movie without subtitles found. Assuming Dutch film."
                 subsneeded="NO"
-                break # Break out of this if loop
             else
                 # Not a movie & no subs found & not a show that requires no subs: ERROR!
                 printf "  Subtitle file not found: " ; do_error
             fi
         fi
         breaktheloop
-        # Check if it is UTF-8 encoded
-        subtitle_raw="$queue/$mediafile.$subext"
-        if [[ -e "$subtitle_raw" ]]; then
-            printf "  Subtitle type ($subformat): "; do_ok
-            subcharset=$(file -ib $subtitle_raw | awk '{ print $2 }' | cut --delimiter=\= --fields=2)
-        fi
-        if [[ "$subcharset" = "utf-8" ]]; then
-            printf "  Subtitle charset (UTF-8): "; do_ok
-            subtitlefile="$tmpfiles/$mediafile.$subext"
-            printf "  Placing approved subtitle file: "
-            trap do_error 1
-            cp $subtitle_raw $subtitlefile && do_ok
+        # Will look into a better solution than an extra test on subsneeded
+        if [[ "$subsneeded" = "YES" ]]; then
+            # Check if it is UTF-8 encoded
+            subtitle_raw="$queue/$mediafile.$subext"
+            if [[ -e "$subtitle_raw" ]]; then
+                printf "  Subtitle type ($subformat): "; do_ok
+                subcharset=$(file -ib $subtitle_raw | awk '{ print $2 }' | cut --delimiter=\= --fields=2)
+            fi
+            if [[ "$subcharset" = "utf-8" ]]; then
+                printf "  Subtitle charset (UTF-8): "; do_ok
+                subtitlefile="$tmpfiles/$mediafile.$subext"
+                printf "  Placing approved subtitle file: "
+                trap do_error 1
+                cp $subtitle_raw $subtitlefile && do_ok
+            else
+                printf "  Subtitle charset ($subcharset): "; do_error
+            fi
         else
-            printf "  Subtitle charset ($subcharset): "; do_error
+            printf "  No subtitles required for $mediafile: " ; do_ok
         fi
-    else
-        printf "  No subtitles required for $mediafile: " ; do_ok
     fi
     breaktheloop
     #################################
