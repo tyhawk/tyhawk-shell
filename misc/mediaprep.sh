@@ -47,7 +47,7 @@ BRIGHT=$(tput bold)
 fileserver="192.168.178.50"
 
 # TV shows that have no subs
-tvnosubs=( "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" )
+tvnosubs=( "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "My.Cat.from.Hell" )
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" )
 
@@ -404,6 +404,13 @@ do
         trap do_error 1 2
         mkvmerge --quiet --output $mkvfile --title "$title" \
             --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile
+        cleanup_quick
+    elif [[ "$showname_raw" = "My.Cat.from.Hell" ]]; then
+        # I don't have any subs for this show and for now I have too many series to sub to do it myself
+        printf "  Merging video: "
+        trap do_error 1 2
+        mkvmerge --quiet --output $mkvfile --title "$title" \
+            --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile
         cleanup_quick
     else
         printf "  Merging video and subtitles: "
