@@ -81,8 +81,8 @@ if [[ $(find $STAGING/*mkv | wc -l) -eq 0 ]]; then
 fi
 
 # Now we split them up into movies and tv shows
-tvshows=( $(basename "$(find $STAGING/ -type f -name '*-s??e??-*.mkv' -exec basename {} \;)" ) ) # Add code to catch no matching files
-movies=( $(basename "$(find $STAGING/ -type f -name '*-\(....\).mkv' -exec basename {} \;)" ) ) # Add code to catch no matching files
+tvshows=( $(find $STAGING/ -type f -name '*-s??e??-*.mkv' -exec basename {} \;) ) # Add code to catch no matching files
+movies=( $(find $STAGING/ -type f -name '*-\(????\).mkv' -exec basename {} \;) ) # Add code to catch no matching files
 
 # We copy the TV-Show to its proper directory one by one and automatically.
 for tvshowfile in "${tvshows[@]}"
@@ -91,7 +91,7 @@ do
     showname=$(echo "$tvshowfile" | cut --delimiter=\- --fields=1)
     # Extract season as well
     showepnum=$(echo "$tvshowfile" | cut --delimiter=\- --fields=2)
-    season="0$((${showepnum:1:2}))"  # temporary solution
+    season="${showepnum:1:2}"
     # Check if the location exists and if not, create it
     showlocation="$tvshowroot/$showname/Season$season"
     if [[ ! -d "$showlocation" ]]; then
