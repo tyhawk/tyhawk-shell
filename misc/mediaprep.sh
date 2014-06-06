@@ -286,13 +286,14 @@ do
             if [[ "$mediatype" = "Movie" ]]; then
                 printf "  Movie without subtitles found. Assuming Dutch film."
                 subsneeded="NO"
+                break # Break out of this if loop
             else
                 # Not a movie & no subs found & not a show that requires no subs: ERROR!
                 printf "  Subtitle file not found: " ; do_error
             fi
         fi
         breaktheloop
-        # Check if it is UTF-8 encoded. Extra check in case there was no subtitle file
+        # Check if it is UTF-8 encoded
         subtitle_raw="$queue/$mediafile.$subext"
         if [[ -e "$subtitle_raw" ]]; then
             printf "  Subtitle type ($subformat): "; do_ok
