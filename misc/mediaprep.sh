@@ -408,18 +408,12 @@ do
         mkvmerge --quiet --output $mkvfile --title "$title" \
             --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile
         cleanup_quick
-    elif [[ "$showname_raw" = "My.Cat.from.Hell" ]]; then
-        # I don't have any subs for this show and for now I have too many series to sub to do it myself
+    elif [[ "$showname_raw" = "My.Cat.from.Hell" ]] || [[ "$showname_raw" = "My.Cat.from.Hell" ]]; then
+        # I don't have any subs for these shows and for now I have too many series to sub to do it myself
         printf "  Merging video: "
         trap do_error 1 2
         mkvmerge --quiet --output $mkvfile --title "$title" \
             --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile
-        cleanup_quick
-    elif [[ "$showname_raw" = "Witchblade" ]]; then
-        # Witchblade will have English subs (for now)
-        mkvmerge --quiet --output $mkvfile --title "$title" \
-            --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile \
-            --language 0:eng --default-track 0 --sub-charset 0:UTF-8 $subtitlefile && do_ok
         cleanup_quick
     else
         printf "  Merging video and subtitles: "
