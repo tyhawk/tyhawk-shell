@@ -15,7 +15,10 @@
 # TV file syntax:     some.tv.show-s01e09-Name_of_the_Episode.ext
 # Movie file syntax:  some.movie.name-2014.ext (input syntax))
 #############################################################################
-
+# Install on your system - TODO not implemented yet!!!
+# You can place it anywhere, even in /usr/local/bin.
+# If you do, make sure the config file is in /usr/local/etc.
+#############################################################################
 # TODO
 # Add flags:  -f  Full processing (the default)
 #             -t  Transcode only. Do not mkvmerge
@@ -39,6 +42,8 @@ queue="$rootdir/01_Queue"
 tmpfiles="$rootdir/02_TempFiles"
 finished="$rootdir/03_Finished"
 dumpster="$rootdir/99_Dumpster"
+#scriptdir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+#etcdir="$()" # same as scriptdir, but ../etc
 
 # Colours... oooh pretty!
 red=$(tput setaf 1)
