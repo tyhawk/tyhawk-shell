@@ -35,6 +35,9 @@ tmpfiles="$rootdir/02_TempFiles"
 finished="$rootdir/03_Finished"
 dumpster="$rootdir/99_Dumpster"
 
+# Need to default this to NO
+FROMDOS="NO"
+
 # Colours... oooh pretty!
 RED=$(tput setaf 1)
 GREEN=$(tput setaf 2)
@@ -149,6 +152,7 @@ printf "\n         Create transcoded MKVs from raw video files${NORMAL}\n\n"
 hash HandBrakeCLI 2>/dev/null || { printf "Could not find handbrake-cli.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
 hash mkvmerge 2>/dev/null || { printf "Could not find mkvmerge.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
 hash rsync 2>/dev/null || { printf "Could not find rsync.\nPlease make sure it is installed.\nAborting ..." >&2; exit 1; }
+hash fromdos 2>/dev/null || { printf "Optional dependency missing: fromdos.\nContinueing ..." >&2; FROMDOS="YES"; exit 1; }
 
 # File system check
 if [[ ! -d "$rootdir" ]]; then
@@ -300,6 +304,15 @@ do
                 printf "  Subtitle type ($subformat): "; do_ok
                 subcharset=$(file -ib $subtitle_raw | awk '{ print $2 }' | cut --delimiter=\= --fields=2)
             fi
+            # Get rid of Windows line terminators (if able)
+            if [[ "$FROMDOS" = "YES" ]]; then
+                if [[ $(file $subtitle_raw | grep CRLF | wc -l) -gt 0 ]]; then
+                    printf "  Converting Windows line terminators to UNIX: "
+                    trap do_error 1
+                    fromdos $subtitle_raw && do_ok
+                fi
+            fi
+            # Place the approved subtitle
             if [[ "$subcharset" = "utf-8" ]]; then
                 printf "  Subtitle charset (UTF-8): "; do_ok
                 subtitlefile="$tmpfiles/$mediafile.$subext"
