@@ -234,7 +234,7 @@ fi
 # Check for files ready for processing
 printf "\n${yellow}Processable files check.${normal}\n"
 printf " Number of files ready for processing: "
-filestodo=( $(find $queue/ -type f -exec basename {} \; | sed 's/\.[^.]*$//' | sort -u) )
+filestodo=( $(find $queue/ -type f -exec basename {} \; | sed 's/\.[^.]*$//') )
 filestodocount="${#filestodo[@]}"
 printf "$filestodocount\n"
 if [[ "$filestodocount" -eq 0 ]]; then
