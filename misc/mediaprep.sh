@@ -246,6 +246,7 @@ fi
 for mediafile in "${filestodo[@]}"
 do
   mediatype="" # to make sure we start with an empty mediatype
+  title="$mediafile" # We set title to mediafile if process fails before setting the title
   subsneeded="YES" # We always need subs, unless exceptions are found
   animation="NO" # We always transcode film, unless exceptions are found
   breakloop="NO" # We use this to break from the loop after a step if we need to
