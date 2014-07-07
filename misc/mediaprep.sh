@@ -252,7 +252,7 @@ do
   breakloop="NO" # We use this to break from the loop after a step if we need to
   # Determine movie or tv show
   step="0. Title"
-  if [[ -n $(find $queue/ -name '*-s??e??-*' | grep "$mediafile") ]] || [[ -n $(find $queue/ -name '*-s????e??-*' | grep "$mediafile") ]; then
+  if [[ -n $(find $queue/ -name '*-s??e??-*' | grep "$mediafile") ]] || [[ -n $(find $queue/ -name '*-s????e??-*' | grep "$mediafile") ]]; then
     mediatype="TV"
     # Extract info from filename
     showname_raw=$(echo "$mediafile" | cut --delimiter=\- --fields=1)
@@ -437,8 +437,8 @@ do
     mkvmerge --quiet --output $mkvfile --title "$title" \
       --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile
     cleanup_quick
-  elif [[ "$showname_raw" = "My.Cat.from.Hell" ]] || [[ "$showname_raw" = "Witchblade" ]]; then
-    # I don't have any subs for these shows and for now I have too many series to sub to do it myself
+  elif [[ "$showname_raw" = "My.Cat.from.Hell" ]] || [[ "$showname_raw" = "Witchblade" ]] || [[ "$showname_raw" = "Looney.Tunes" ]] || [[ "$showname_raw" = "Tom.and.Jerry" ]]; then
+    # English shows with no subs
     printf "  Merging video: "
     trap do_error 1 2
     mkvmerge --quiet --output $mkvfile --title "$title" \
