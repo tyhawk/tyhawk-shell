@@ -57,7 +57,7 @@ bright=$(tput bold)
 fileserver="192.168.178.50"
 
 # TV shows that have no subs
-tvnosubs=( "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.from.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" )
+tvnosubs=( "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" )
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" )
 
@@ -252,7 +252,7 @@ do
   breakloop="NO" # We use this to break from the loop after a step if we need to
   # Determine movie or tv show
   step="0. Title"
-  if [[ -n $(find $queue/ -name '*-s??e??-*' | grep "$mediafile") ]] || [[ -n $(find $queue/ -name '*-s????e??-*' | grep "$mediafile") ]]; then
+  if [[ -n $(find $queue/ -name '*-s??e??-*' | grep "$mediafile") ]]; then
     mediatype="TV"
     # Extract info from filename
     showname_raw=$(echo "$mediafile" | cut --delimiter=\- --fields=1)
@@ -265,6 +265,19 @@ do
     eptitle="${showepname//_/ }"
     # Setting the title
     title="$showname - Season $season Episode $episode - $eptitle"
+  elif [[ -n $(find $queue/ -name '*-s????e??-*' | grep "$mediafile") ]]; then
+    mediatype="TV"
+    # Extract info from filename
+    showname_raw=$(echo "$mediafile" | cut --delimiter=\- --fields=1)
+    showepnum=$(echo "$mediafile" | cut --delimiter=\- --fields=2)
+    showepname=$(echo "$mediafile" | cut --delimiter=\- --fields=3-)
+    # Prettify text for nicer output
+    showname="${showname_raw//./ }"
+    season="$((10#${showepnum:1:4}))"
+    episode="$((10#${showepnum:6:2}))"
+    eptitle="${showepname//_/ }"
+    # Setting the title
+    title="$showname - Year $season Episode $episode - $eptitle"
   elif [[ -n $(find $queue/ -name "*-????.*" | grep "$mediafile") ]]; then
     mediatype="Movie"
     # Extract info from filename
@@ -437,7 +450,7 @@ do
     mkvmerge --quiet --output $mkvfile --title "$title" \
       --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile
     cleanup_quick
-  elif [[ "$showname_raw" = "My.Cat.from.Hell" ]] || [[ "$showname_raw" = "Witchblade" ]] || [[ "$showname_raw" = "Looney.Tunes" ]] || [[ "$showname_raw" = "Tom.and.Jerry" ]]; then
+  elif [[ "$showname_raw" = "My.Cat.From.Hell" ]] || [[ "$showname_raw" = "Witchblade" ]] || [[ "$showname_raw" = "Looney.Tunes" ]] || [[ "$showname_raw" = "Tom.and.Jerry" ]]; then
     # English shows with no subs
     printf "  Merging video: "
     trap do_error 1 2
