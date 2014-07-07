@@ -57,7 +57,7 @@ bright=$(tput bold)
 fileserver="192.168.178.50"
 
 # TV shows that have no subs
-tvnosubs=( "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.from.Hell" "Witchblade" )
+tvnosubs=( "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.from.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" )
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" )
 
