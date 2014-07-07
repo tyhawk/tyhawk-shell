@@ -252,7 +252,7 @@ do
   breakloop="NO" # We use this to break from the loop after a step if we need to
   # Determine movie or tv show
   step="0. Title"
-  if [[ -n $(find $queue/ -name '*-s??e??-*' | grep "$mediafile") ]]; then
+  if [[ -n $(find $queue/ -name '*-s??e??-*' | grep "$mediafile") ]] || [[ -n $(find $queue/ -name '*-s????e??-*' | grep "$mediafile") ]; then
     mediatype="TV"
     # Extract info from filename
     showname_raw=$(echo "$mediafile" | cut --delimiter=\- --fields=1)
