@@ -17,6 +17,11 @@ if [[ ! -d $ttf_dest ]]; then
     sudo mkdir -p $ttf_dest
 fi
 
+# Create OTF dir if not present
+if [[ ! -d $otf_dest ]]; then
+    sudo mkdir -p $otf_dest
+fi
+
 # TTF
 printf "Copying TrueType fonts.\n"
 for font in $(find $ttf_src -regex ".*\.\(ttf\|TTF\)" -exec basename {} \;)
