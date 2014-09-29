@@ -54,13 +54,14 @@ normal=$(tput sgr0)
 bright=$(tput bold)
 
 # Where we copy finished results
-fileserver="192.168.178.50"
+fileserver="192.168.176.50"
 
 # TV shows that have no subs
-tvnosubs=( "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" )
+tvnosubs=( "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" )
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" )
-
+# Animated movies
+animatedmovie=( "Tarzan" "The.Lion.King" "Tarzan.and.Jane" )
 ####
 # Functions
 ####
@@ -368,13 +369,25 @@ do
   # Transcode depending on certain file properties
   if [[ "$mediatype" = "Movie" ]]; then
     # It's a movie! Let's transcode it!
-    HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
-      --x264-preset="faster" --encoder x264 --x264-tune film \
-      --quality 23 --rate 25 --cfr \
-      --audio 1 --aencoder faac --ab 160 --mixdown stereo \
-      --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
-      --deinterlace="fast" 2> /dev/null
-    transcode_result
+    # But first, let's check for animated movies
+    for animatedmovie in "${movieanimation[@]}"; do [[ "$animatedmovie" = "$moviename_raw" ]] && animation="YES"; done
+    if [[ "$animation" = "YES" ]]; then
+        HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
+        --x264-preset="faster" --encoder x264 --x264-tune animation \
+        --quality 23 --rate 25 --cfr \
+        --audio 1 --aencoder faac --ab 160 --mixdown stereo \
+        --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
+        --deinterlace="fast" 2> /dev/null
+      transcode_result
+    elif [[ "$animation" = "NO" ]]; then
+      HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
+        --x264-preset="faster" --encoder x264 --x264-tune film \
+        --quality 23 --rate 25 --cfr \
+        --audio 1 --aencoder faac --ab 160 --mixdown stereo \
+        --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
+        --deinterlace="fast" 2> /dev/null
+      transcode_result
+    fi
   elif [[ "$mediatype" = "TV" ]]; then
     hboutfile="$tmpfiles/$showname_raw-$showepnum.mp4"
     # First we check if this is a known animation TV show
@@ -388,8 +401,8 @@ do
         --maxWidth 1024 --loose-anamorphic \
         --deinterlace="fast" --deblock 2> /dev/null
       transcode_result
-    elif [[ "$showname_raw" = "Cosmos.A.Space.Time.Odyssey" ]]; then
-      # I want to encode COSMOS at 720p
+    elif [[ "$showname_raw" = "Cosmos.A.Space.Time.Odyssey" ]] || [[ "$showname_raw" = "Dragon.Age.Redemption" ]] ; then
+      # I want to encode COSMOS & Dragon Age Redemption at 720p
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
         --quality 23 --rate 25 --cfr \
@@ -459,6 +472,7 @@ do
     cleanup_quick
   else
     printf "  Merging video and subtitles: "
+    # Create the MKV
     trap do_error 1 2
     mkvmerge --quiet --output $mkvfile --title "$title" \
       --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile \
@@ -466,28 +480,13 @@ do
     cleanup_quick
   fi
   breaktheloop
-  ##############################
-  #### STEP 4 - Upload file ####
-  ##############################
-  step="4. Uploading"
+  ##################################
+  #### STEP 4 - Optimizing file ####
+  ##################################
+  step="4. Optimizing"
   # Announce step 4
-  printf " ${yellow}Step 4${normal} - Uploading the Matroska file.\n"
-  printf "  Server $fileserver reachable: "
-  ping -c 1 $fileserver >/dev/null 2>&1
-  if [[ "$?" -eq 0 ]]; then
-    do_ok
-    printf "  Moving file $(basename $mkvfile) to staging directory on server:\n"
-    rsync --perms --times --progress --human-readable --compress --remove-source-files --partial $mkvfile $fileserver:~/Staging/
-    if [[ "$?" -gt 0 ]]; then
-      printf "  Transfer completed: "; do_error
-    else
-      printf "  Transfer completed: "; do_ok
-    fi
-  else
-    do_error
-  fi
-  breakloop="NO" # No reason to break the loop if uploading fails
-  breaktheloop
+  printf " ${yellow}Step 4${normal} - Optimizing the Matroska file.\n"
+  mkclean --optimize --keep-cues "$mkvfile" "${mkvfile}-clean" && mv -f "${mkvfile}-clean" "$mkvfile" 
   #######################################
   #### STEP 5 - Move processed files ####
   #######################################
