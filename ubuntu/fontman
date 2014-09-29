@@ -2,14 +2,25 @@
 #
 # Fontman
 # Installing font from Dropbox automagically
-##############################################
-# Version 20140119
-##############################################
+#############################################################
+# Version 20140902
+# TODO fontman can't handle fonts with spaces in their name!
+#############################################################
 
 ttf_src="$HOME/Dropbox/EyeCandy/Fonts/ttf"
 otf_src="$HOME/Dropbox/EyeCandy/Fonts/opentype"
 ttf_dest="/usr/local/share/fonts/truetypefonts"
 otf_dest="/usr/local/share/fonts/opentype"
+
+# Create TTF dir if not present
+if [[ ! -d $ttf_dest ]]; then
+    sudo mkdir -p $ttf_dest
+fi
+
+# Create OTF dir if not present
+if [[ ! -d $otf_dest ]]; then
+    sudo mkdir -p $otf_dest
+fi
 
 # TTF
 printf "Copying TrueType fonts.\n"
@@ -17,7 +28,7 @@ for font in $(find $ttf_src -regex ".*\.\(ttf\|TTF\)" -exec basename {} \;)
 do
 	if [[ ! -e "$ttf_dest/$font" ]]; then
 		printf "Installing $font\n"
-		sudo cp  $ttf_src/$font $ttf_dest/$font
+		sudo cp  "$ttf_src/$font" "$ttf_dest/$font"
 	fi
 done
 
@@ -27,7 +38,7 @@ for font in $(find $otf_src -regex ".*\.\(otf\|OTF\)" -exec basename {} \;)
 do
 	if [[ ! -e "$otf_dest/$font" ]]; then
 		printf "Installing $font\n"
-		sudo cp  $otf_src/$font $ttf_dest/$font
+		sudo cp  "$otf_src/$font" "$ttf_dest/$font"
 	fi
 done
 
