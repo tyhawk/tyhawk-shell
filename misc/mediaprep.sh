@@ -59,7 +59,7 @@ fileserver="192.168.176.50"
 # TV shows that have no subs
 tvnosubs=( "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" )
 # Animation TV shows (hand-drawn content)
-tvanimation=( "Tom.and.Jerry" "Looney.Tunes" )
+tvanimation=( "Tom.and.Jerry" "Looney.Tunes" "Avatar.the.Legend.of.Korra" "Avatar.the.Last.Airbender" )
 # Animated movies
 animatedmovie=( "Tarzan" "The.Lion.King" "Tarzan.and.Jane" "Dumbo" "Aladdin" "Snow.White.And.The.Seven.Dwarfs" "Bambi" "Beauty.and.the.Beast" "Titan.A.E" "Brother.Bear" "Pinocchio" "Bambi.II" "Brother.Bear.2" "Atlantis.The.Lost.Empire" "Hercules" "Mulan" "Piglets.Big.Movie" "Lilo.and.Stitch" "Pocahontas" "Poohs.Heffalump.Movie" "The.Princess.and.the.Frog" "Winnie.the.Pooh" )
 ####
