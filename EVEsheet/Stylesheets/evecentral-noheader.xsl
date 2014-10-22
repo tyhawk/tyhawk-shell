@@ -5,7 +5,6 @@
 <xsl:variable name="fieldNames" select="'yes'"/>
 
 <xsl:template match="/">
-	
 	<xsl:apply-templates select="evec_api/marketstat"/>
 </xsl:template>
 
@@ -15,9 +14,17 @@
 		<xsl:value-of select="$delimiter"/>
 		<xsl:value-of select="buy/avg"/>
 		<xsl:value-of select="$delimiter"/>
+		<xsl:value-of select="buy/min"/>
+		<xsl:value-of select="$delimiter"/>
+		<xsl:value-of select="buy/max"/>
+		<xsl:value-of select="$delimiter"/>
 		<xsl:value-of select="buy/volume"/>
 		<xsl:value-of select="$delimiter"/>
 		<xsl:value-of select="sell/avg"/>
+		<xsl:value-of select="$delimiter"/>
+		<xsl:value-of select="sell/min"/>
+		<xsl:value-of select="$delimiter"/>
+		<xsl:value-of select="sell/max"/>
 		<xsl:value-of select="$delimiter"/>
 		<xsl:value-of select="sell/volume"/>
 		<xsl:value-of select="$delimiter"/>

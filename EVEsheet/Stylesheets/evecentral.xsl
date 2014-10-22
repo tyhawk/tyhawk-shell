@@ -7,8 +7,12 @@
 <csv:columns>
 	<column>Type ID</column>
 	<column>Buy avg</column>
+	<column>Buy min</column>
+	<column>Buy max</column>
 	<column>Buy volume</column>
 	<column>Sell avg</column>
+	<column>Sell min</column>
+	<column>Sell max</column>
 	<column>Sell volume</column>
 	<column>All avg</column>
 	<column>All volume</column>
@@ -33,9 +37,17 @@
 		<xsl:value-of select="$delimiter"/>
 		<xsl:value-of select="buy/avg"/>
 		<xsl:value-of select="$delimiter"/>
+		<xsl:value-of select="buy/min"/>
+		<xsl:value-of select="$delimiter"/>
+		<xsl:value-of select="buy/max"/>
+		<xsl:value-of select="$delimiter"/>
 		<xsl:value-of select="buy/volume"/>
 		<xsl:value-of select="$delimiter"/>
 		<xsl:value-of select="sell/avg"/>
+		<xsl:value-of select="$delimiter"/>
+		<xsl:value-of select="sell/min"/>
+		<xsl:value-of select="$delimiter"/>
+		<xsl:value-of select="sell/max"/>
 		<xsl:value-of select="$delimiter"/>
 		<xsl:value-of select="sell/volume"/>
 		<xsl:value-of select="$delimiter"/>
