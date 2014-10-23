@@ -499,9 +499,8 @@ do
   if [[ "$subsneeded" = "YES" ]]; then
     printf "  Moving subtitle file $(basename $subtitle_raw) to $dumpster: "
     trap do_error 1
-    mv $subtitle_raw $dumpster && do_ok
+    mv ${subtitle_raw} ${dumpster} && do_ok
   fi
   breaktheloop
 done
-#
 # End Script
