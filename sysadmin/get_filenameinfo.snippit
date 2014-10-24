@@ -1,0 +1,6 @@
+filename=$(basename "$fullfile")
+extension="${filename##*.}"
+filename="${filename%.*}"
+
+Alternatively, you can focus on the last '/' of the path instead of the '.' which should work even if you have unpredictable file extensions:
+filename="${fullfile##*/}"
