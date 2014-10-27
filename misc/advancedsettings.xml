@@ -1,0 +1,8 @@
+# http://kodi.wiki/view/HOW-TO:Modify_the_cache
+<advancedsettings>
+	<network>
+		<buffermode>1</buffermode>
+		<cachemembuffersize>104857600</cachemembuffersize>
+		<readbufferfactor>5</readbufferfactor>
+	</network>
+</advancedsettings>
