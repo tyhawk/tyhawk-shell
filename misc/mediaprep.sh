@@ -53,9 +53,6 @@ blue=$(tput setaf 4)
 normal=$(tput sgr0)
 bright=$(tput bold)
 
-# Where we copy finished results
-fileserver="192.168.176.50"
-
 # TV shows that have no subs
 tvnosubs=( "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" )
 # Animation TV shows (hand-drawn content)
@@ -197,40 +194,6 @@ fi
 # Next, clean out any files from directories that should be empty
 printf "\n${yellow}Residual file check.${normal}\n"
 clean_tmpfiles
-
-# check for files lingering in the 05_toStaging folder and rsync those first to regain disk space
-printf "\n${yellow}Finished directory check.${normal}\n"
-uploadfile=( $(find $finished/ -type f -name '*.mkv' -exec basename {} \; | sort -u) )
-uploadfilecount="${#uploadfile[@]}"
-if [[ "$uploadfilecount" -gt 0 ]]; then
-  if [[ "$uploadfilecount" -eq 1 ]]; then
-    printf " Detecting 1 file ready for upload.\n"
-  else
-    printf " Detecting $uploadfilecount files ready for upload.\n"
-  fi
-  printf " Server $fileserver reachable: "
-  ping -c 1 $fileserver >/dev/null 2>&1
-  if [[ "$?" -eq 0 ]]; then
-    do_ok
-    for mkvfile in "${uploadfile[@]}"
-    do
-      printf " Moving file $mkvfile to Staging directory on server:\n"
-      rsync --update --perms --times --progress --human-readable --compress --remove-source-files --partial $finished/$mkvfile $fileserver:~/Staging/
-      if [[ "$?" -gt 0 ]]; then
-        printf " Transfer completed: "; do_error
-        # Break from the loop / do not continue with next steps for this file (I hope)
-        continue
-      else
-        printf " Transfer completed: "; do_ok
-      fi
-    done
-    printf "\n\n"
-  else
-    do_error
-  fi
-else
-  printf " No files found. "; do_ok
-fi
 
 # Check for files ready for processing
 printf "\n${yellow}Processable files check.${normal}\n"
