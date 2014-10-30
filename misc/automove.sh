@@ -5,27 +5,19 @@
 # © 2014 - John Gerritse - version 1.2
 ############################################################################
 
-# Colours... oooh pretty!
-red=$(tput setaf 1)
-green=$(tput setaf 2)
-yellow=$(tput setaf 3)
-blue=$(tput setaf 4)
-normal=$(tput sgr0)
-bright=$(tput bold)
-
 ####
 # Functions
 ####
 exit_int() {
   # Function to do a clean exit when an interrupt is trapped
-  printf "${red}Process aborted by user${normal}\n"
+  printf "$(date +"%b %d %H:%M:%S") Process aborted by user.\n"  >> $logfile
   cleanup
   exit 0
 }
 
 exit_term() {
   # Function to do a clean exit when a termination is trapped
-  echo "${red}Process terminated${normal}"
+  printf "$(date +"%b %d %H:%M:%S") Process terminated.\n"  >> $logfile
   cleanup
   exit 1
 }
@@ -39,12 +31,12 @@ move_movie () {
     for moviefile in "${movies[@]}"
     do
         # We move the file to its proper location
-        printf "$(date +"%b %d %H:%M:%S") moving file $moviefile to $movieroot\n"  >> $logfile
-        rsync --perms --times --progress --human-readable --compress --remove-source-files --partial $staging/$moviefile $movieroot
+        printf "$(date +"%b %d %H:%M:%S") Moving file $moviefile to $movieroot\n"  >> $logfile
+        rsync --perms --times --progress --human-readable --compress --remove-source-files --partial "$staging/$moviefile" "$movieroot"
         if [[ "$?" -gt 0 ]]; then
-            printf "$(date +"%b %d %H:%M:%S") transfer of $moviefile failed\n" >> $logfile
+            printf "$(date +"%b %d %H:%M:%S") Transfer of $moviefile failed\n" >> $logfile
         else
-            printf "$(date +"%b %d %H:%M:%S") transfer of $moviefile completed\n" >> $logfile
+            printf "$(date +"%b %d %H:%M:%S") Transfer of $moviefile completed\n" >> $logfile
         fi
     done
 }
@@ -64,22 +56,23 @@ move_tvshow () {
             mkdir -p $showlocation
         fi
         # We move the file to its proper location
-        printf "$(date +"%b %d %H:%M:%S") moving file $tvshow to $showlocation\n" >> $logfile
-        rsync --perms --times --progress --human-readable --compress --remove-source-files --partial $staging/$tvshowfile $showlocation
+        printf "$(date +"%b %d %H:%M:%S") Moving file $tvshowfile to $showlocation\n" >> $logfile
+        rsync --perms --times --progress --human-readable --compress --remove-source-files --partial "$staging/$tvshowfile" "$showlocation"
         if [[ "$?" -gt 0 ]]; then
-            printf "$(date +"%b %d %H:%M:%S") transfer of $tvshow failed\n" >> $logfile
+            printf "$(date +"%b %d %H:%M:%S") Transfer of $tvshowfile failed\n" >> $logfile
         else
-            printf "$(date +"%b %d %H:%M:%S") transfer of $tvshow completed\n" >> $logfile
+            printf "$(date +"%b %d %H:%M:%S") Transfer of $tvshowfile completed\n" >> $logfile
         fi
     done
 }
 
 #Staging directory
-staging="$HOME/PLEX/03_Finished/"
+staging="$HOME/PLEX/03_Finished"
 
 # Define root dirs for TV shows & movies
 tvshowroot="/mnt/TV"
 movieroot="/mnt/Movies"
+dumpster="$HOME/PLEX/99_Dumpster/"
 
 # Logfile
 logfile="$HOME/automove.log"
@@ -133,31 +126,42 @@ if [[ ! -z "$lastPID" ]] && [[ -d "/proc/$lastPID" ]]; then
     printf "$(date +"%b %d %H:%M:%S") Exiting this instance ($$).\n" >> $logfile
     exit 0
 else
+    printf "$(date +"%b %d %H:%M:%S") Starting automove ($$).\n" >> $logfile
     # save my pid in the lock file
     echo $$ > $lf
     # sleep just to make testing easier
-    sleep 5
+    sleep 5s
     # Time to start our loop
     while true
     do
         # Time to start checking for files
         # First check if there are MKV files in the Staging dir
         if [[ $(find $staging/*mkv | wc -l) -eq 0 ]]; then
-            printf "$(date +"%b %d %H:%M:%S") No MKV files found. Sleeping for 60 seconds.\n" >> $logfile
-            sleep 60
+            printf "$(date +"%b %d %H:%M:%S") No MKV files found. Sleeping for 5 minutes.\n" >> $logfile
+            sleep 5m
         else
+            printf "$(date +"%b %d %H:%M:%S") Starting processing in 2 minutes.\n" >> $logfile
+            # First wait for 2 minutes to make sure not to try to move files that aren't done yet
+            sleep 2m
             # Move the movie files first
+            printf "$(date +"%b %d %H:%M:%S") Processing movies (if any are there).\n" >> $logfile
             movies=( $(find $staging/ -type f -name '*-\(????\).mkv' -exec basename {} \;) )
-            if [[ -n "$movies" ]]; then
+            if [[ ! -z "$movies" ]]; then
                 move_movie
             fi
             # Next, tv shows
-            tvshows=( $(find $staging/ -type f -name '*-s??e??-*.mkv' -exec basename {} \;) )
-            if [[ -n "$tvshow" ]]; then
+            printf "$(date +"%b %d %H:%M:%S") Processing tv shows (if any are there).\n" >> $logfile
+            tvshows=( $(find $staging/ -type f -name "*-s??e??-*.mkv" -exec basename {} \;) )
+            if [[ ! -z "$tvshows" ]]; then
                 move_tvshow
             fi
             # Now, we sleep for one minute
-            sleep 60
+            sleep 1m
+            # And delete old files from the trash folder to regain space (anything older then 4 hours)
+            printf "$(date +"%b %d %H:%M:%S") Purging old files from $dumpster.\n" >> $logfile
+            find $dumpster -cmin +240 -type f -delete
+            # Finally, sleep for 5 minutes
+            sleep 5m
         fi
     done
 fi
