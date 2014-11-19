@@ -67,12 +67,12 @@ move_tvshow () {
 }
 
 #Staging directory
-staging="$HOME/PLEX/03_Finished"
+staging="$HOME/TransFusion/03_Finished"
 
 # Define root dirs for TV shows & movies
 tvshowroot="/mnt/TV"
 movieroot="/mnt/Movies"
-dumpster="$HOME/PLEX/99_Dumpster/"
+dumpster="$HOME/TransFusion/99_Dumpster/"
 
 # Logfile
 logfile="$HOME/automove.log"

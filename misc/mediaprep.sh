@@ -37,7 +37,7 @@
 # Rewrite to Python 3 (if I ever have time to actually learn Python)
 
 # Variables
-rootdir="$HOME/PLEX"
+rootdir="$HOME/TransFusion"
 queue="$rootdir/01_Queue"
 tmpfiles="$rootdir/02_TempFiles"
 finished="$rootdir/03_Finished"
