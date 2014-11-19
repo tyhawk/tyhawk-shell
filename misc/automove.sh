@@ -137,23 +137,25 @@ else
         # Time to start checking for files
         # First check if there are MKV files in the Staging dir
         if [[ $(find $staging/*mkv | wc -l) -eq 0 ]]; then
-            printf "$(date +"%b %d %H:%M:%S") No MKV files found. Sleeping for 5 minutes.\n" >> $logfile
             sleep 5m
         else
-            printf "$(date +"%b %d %H:%M:%S") Starting processing in 2 minutes.\n" >> $logfile
             # First wait for 2 minutes to make sure not to try to move files that aren't done yet
             sleep 2m
             # Move the movie files first
-            printf "$(date +"%b %d %H:%M:%S") Processing movies (if any are there).\n" >> $logfile
+            printf "$(date +"%b %d %H:%M:%S") Processing movies.\n" >> $logfile
             movies=( $(find $staging/ -type f -name '*-\(????\).mkv' -exec basename {} \;) )
             if [[ ! -z "$movies" ]]; then
                 move_movie
+	    else
+		printf "$(date +"%b %d %H:%M:%S") No movies found.\n" >> $logfile
             fi
             # Next, tv shows
             printf "$(date +"%b %d %H:%M:%S") Processing tv shows (if any are there).\n" >> $logfile
             tvshows=( $(find $staging/ -type f -name "*-s??e??-*.mkv" -exec basename {} \;) )
             if [[ ! -z "$tvshows" ]]; then
                 move_tvshow
+	    else
+		printf "$(date +"%b %d %H:%M:%S") No tv shows found.\n" >> $logfile
             fi
             # Now, we sleep for one minute
             sleep 1m
