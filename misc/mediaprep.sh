@@ -58,7 +58,7 @@ tvnosubs=( "HomeVideos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" "Avatar.the.Legend.of.Korra" "Avatar.the.Last.Airbender" )
 # Animated movies
-animatedmovie=( "Tarzan" "The.Lion.King" "Tarzan.and.Jane" "Dumbo" "Aladdin" "Snow.White.And.The.Seven.Dwarfs" "Bambi" "Beauty.and.the.Beast" "Titan.A.E" "Brother.Bear" "Pinocchio" "Bambi.II" "Brother.Bear.2" "Atlantis.The.Lost.Empire" "Hercules" "Mulan" "Piglets.Big.Movie" "Lilo.and.Stitch" "Pocahontas" "Poohs.Heffalump.Movie" "The.Princess.and.the.Frog" "Winnie.the.Pooh" )
+animatedmovie=( "The.Rescuers" "The.Rescuers.Down.Under" "Peter.Pan" "The.Little.Mermaid" "The.Lion.King" "Tarzan.and.Jane" "Dumbo" "Aladdin" "Snow.White.And.The.Seven.Dwarfs" "Bambi" "Beauty.and.the.Beast" "Titan.A.E" "Brother.Bear" "Pinocchio" "Bambi.II" "Brother.Bear.2" "Atlantis.The.Lost.Empire" "Hercules" "Mulan" "Piglets.Big.Movie" "Lilo.and.Stitch" "Pocahontas" "Poohs.Heffalump.Movie" "The.Princess.and.the.Frog" "Winnie.the.Pooh" )
 ####
 # Functions
 ####
