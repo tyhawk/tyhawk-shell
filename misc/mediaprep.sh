@@ -54,7 +54,7 @@ normal=$(tput sgr0)
 bright=$(tput bold)
 
 # TV shows that have no subs
-tvnosubs=( "HomeVideos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" )
+tvnosubs=( "Home.Videos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" )
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" "Avatar.the.Legend.of.Korra" "Avatar.the.Last.Airbender" )
 # Animated movies
@@ -364,7 +364,7 @@ do
         --maxWidth 1024 --loose-anamorphic \
         --deinterlace="fast" --deblock 2> /dev/null
       transcode_result
-    elif [[ "$showname_raw" = "Cosmos.A.Space.Time.Odyssey" ]] || [[ "$showname_raw" = "HomeVideos" ]] ; then
+    elif [[ "$showname_raw" = "Cosmos.A.Space.Time.Odyssey" ]] || [[ "$showname_raw" = "Home.Videos" ]] ; then
       # I want to encode COSMOS & Dragon Age Redemption at 720p
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
