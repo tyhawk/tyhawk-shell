@@ -57,6 +57,8 @@ bright=$(tput bold)
 tvnosubs=( "Home.Videos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" "Vrienden.Voor.Het.Leven" "Wie.Is.De.Mol" "Swiebertje" "Missie.Aarde" "Danni.Lowinski.NL" )
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" "Avatar.the.Legend.of.Korra" "Avatar.the.Last.Airbender" )
+# TV Shows with English subs
+tvengsubs=( "Farscape" "Andromeda" "Babylon.5" )
 # Animated movies
 animatedmovie=( "The.Rescuers" "The.Rescuers.Down.Under" "Peter.Pan" "The.Little.Mermaid" "The.Lion.King" "Tarzan.and.Jane" "Dumbo" "Aladdin" "Snow.White.And.The.Seven.Dwarfs" "Bambi" "Beauty.and.the.Beast" "Titan.A.E" "Brother.Bear" "Pinocchio" "Bambi.II" "Brother.Bear.2" "Atlantis.The.Lost.Empire" "Hercules" "Mulan" "Piglets.Big.Movie" "Lilo.and.Stitch" "Pocahontas" "Poohs.Heffalump.Movie" "The.Princess.and.the.Frog" "Winnie.the.Pooh" )
 ####
@@ -435,13 +437,22 @@ do
     cleanup_quick
   else
     printf "  Merging video and subtitles: "
+    for tvshowengsubs in "${tvengsubs[@]}"; do [[ "$tvshowengsubs" = "$showname_raw" ]] && engsubs="YES"; done
+    for cartoon in "${tvanimation[@]}"; do [[ "$cartoon" = "$showname_raw" ]] && animation="YES"; done
     # Create the MKV
     trap do_error 1 2
-    mkvmerge --quiet --output $mkvfile --title "$title" \
-      --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile \
-      --language 0:dut --default-track 0 --sub-charset 0:UTF-8 $subtitlefile && do_ok
+    if [[ "$engsubs" = "YES"]];
+        mkvmerge --quiet --output $mkvfile --title "$title" \
+            --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile \
+            --language 0:eng --default-track 0 --sub-charset 0:UTF-8 $subtitlefile && do_ok
+        cleanup_quick
+    else
+        mkvmerge --quiet --output $mkvfile --title "$title" \
+            --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile \
+            --language 0:dut --default-track 0 --sub-charset 0:UTF-8 $subtitlefile && do_ok
     cleanup_quick
   fi
+  engsubs="NO" # reset value
   breaktheloop
   ##################################
   #### STEP 4 - Optimizing file ####
