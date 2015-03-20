@@ -438,7 +438,6 @@ do
   else
     printf "  Merging video and subtitles: "
     for tvshowengsubs in "${tvengsubs[@]}"; do [[ "$tvshowengsubs" = "$showname_raw" ]] && engsubs="YES"; done
-    for cartoon in "${tvanimation[@]}"; do [[ "$cartoon" = "$showname_raw" ]] && animation="YES"; done
     # Create the MKV
     trap do_error 1 2
     if [[ "$engsubs" = "YES"]];
