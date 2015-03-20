@@ -437,10 +437,10 @@ do
     cleanup_quick
   else
     printf "  Merging video and subtitles: "
-    for tvshowengsubs in "${tvengsubs[@]}"; do [[ "$tvshowengsubs" = "$showname_raw" ]] && engsubs="YES"; done
+    for tvshowengsubs in "${tvengsubs[@]}"; do [[ "$tvshowengsubs" = "$showname_raw" ]] && engsubs="YES" ; done
     # Create the MKV
     trap do_error 1 2
-    if [[ "$engsubs" = "YES"]];
+    if [[ "$engsubs" = "YES" ]]; then
         mkvmerge --quiet --output $mkvfile --title "$title" \
             --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile \
             --language 0:eng --default-track 0 --sub-charset 0:UTF-8 $subtitlefile && do_ok
@@ -449,7 +449,8 @@ do
         mkvmerge --quiet --output $mkvfile --title "$title" \
             --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile \
             --language 0:dut --default-track 0 --sub-charset 0:UTF-8 $subtitlefile && do_ok
-    cleanup_quick
+    	cleanup_quick
+    fi
   fi
   engsubs="NO" # reset value
   breaktheloop
