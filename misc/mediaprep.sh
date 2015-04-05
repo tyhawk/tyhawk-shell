@@ -425,14 +425,14 @@ do
   if [[ "$subsneeded" = "NO" ]]; then
     printf "  Merging video: "
     trap do_error 1 2
-    mkvmerge --quiet --output $mkvfile --title "$title" \
+    mkvmerge --quiet --output $mkvfile \
       --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile
     cleanup_quick
   elif [[ "$showname_raw" = "My.Cat.From.Hell" ]] || [[ "$showname_raw" = "Witchblade" ]] || [[ "$showname_raw" = "Looney.Tunes" ]] || [[ "$showname_raw" = "Tom.and.Jerry" ]]; then
     # English shows with no subs
     printf "  Merging video: "
     trap do_error 1 2
-    mkvmerge --quiet --output $mkvfile --title "$title" \
+    mkvmerge --quiet --output $mkvfile \
       --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile
     cleanup_quick
   else
@@ -441,12 +441,12 @@ do
     # Create the MKV
     trap do_error 1 2
     if [[ "$engsubs" = "YES" ]]; then
-        mkvmerge --quiet --output $mkvfile --title "$title" \
+        mkvmerge --quiet --output $mkvfile \
             --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile \
             --language 0:eng --default-track 0 --sub-charset 0:UTF-8 $subtitlefile && do_ok
         cleanup_quick
     else
-        mkvmerge --quiet --output $mkvfile --title "$title" \
+        mkvmerge --quiet --output $mkvfile \
             --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile \
             --language 0:dut --default-track 0 --sub-charset 0:UTF-8 $subtitlefile && do_ok
     	cleanup_quick
