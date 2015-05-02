@@ -366,8 +366,8 @@ do
         --maxWidth 1024 --loose-anamorphic \
         --deinterlace="fast" --deblock 2> /dev/null
       transcode_result
-    elif [[ "$showname_raw" = "Cosmos.A.Space.Time.Odyssey" ]] || [[ "$showname_raw" = "Home.Videos" ]] ; then
-      # I want to encode COSMOS & Dragon Age Redemption at 720p
+    elif [[ "$showname_raw" = "Cosmos.A.Space.Time.Odyssey" ]] || [[ "$showname_raw" = "Home.Videos" ]] || [[ "$showname_raw" = "Game.Trailers" ]]; then
+      # I want to encode certain files at 720p
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
         --quality 23 --rate 25 --cfr \
