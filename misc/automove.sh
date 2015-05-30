@@ -136,7 +136,7 @@ else
     do
         # Time to start checking for files
         # First check if there are MKV files in the Staging dir
-        if [[ $(find $staging/*mkv | wc -l) -eq 0 ]]; then
+        if [[ $(find $staging/*mkv 2>/dev/null | wc -l) -eq 0 ]]; then
             sleep 5m
         else
             # First wait for 2 minutes to make sure not to try to move files that aren't done yet
