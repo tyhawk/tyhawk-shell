@@ -156,7 +156,7 @@ printf "#     #  ######  #####      #    #    # #        #    #  ######  #\n"
 printf "\n         Create transcoded MKVs from raw video files${normal}\n\n"
 
 # Dependency check - more code then before, but much nicer
-my_needed_commands="HandBrakeCLI mkvmerge mkvmerge fromdos"
+my_needed_commands="HandBrakeCLI mkvmerge mkclean fromdos"
 
 missing_counter=0
 for needed_command in $my_needed_commands; do
