@@ -340,7 +340,7 @@ do
         HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune animation \
         --quality 23 --rate 25 --cfr \
-        --audio 1 --aencoder faac --ab 160 --mixdown stereo \
+        --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
         --deinterlace="fast" 2> /dev/null
       transcode_result
@@ -348,7 +348,7 @@ do
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
         --quality 23 --rate 25 --cfr \
-        --audio 1 --aencoder faac --ab 160 --mixdown stereo \
+        --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
         --deinterlace="fast" 2> /dev/null
       transcode_result
@@ -362,7 +362,7 @@ do
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune animation \
         --quality 23 --rate 25 --cfr \
-        --audio 1 --aencoder faac --ab 160 --mixdown stereo \
+        --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1024 --loose-anamorphic \
         --deinterlace="fast" --deblock 2> /dev/null
       transcode_result
@@ -371,7 +371,7 @@ do
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
         --quality 23 --rate 25 --cfr \
-        --audio 1 --aencoder faac --ab 160 --mixdown stereo \
+        --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
         --deinterlace="fast" --deblock 2> /dev/null
       transcode_result
@@ -380,7 +380,7 @@ do
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
         --quality 23 --rate 25 --cfr \
-        --audio 1 --aencoder faac --ab 160 --mixdown stereo \
+        --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1024 --loose-anamorphic \
         --deinterlace="fast" --deblock 2> /dev/null
       transcode_result
