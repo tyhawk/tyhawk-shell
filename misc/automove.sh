@@ -161,7 +161,7 @@ else
             sleep 1m
             # And delete old files from the trash folder to regain space (anything older then 4 hours)
             printf "$(date +"%b %d %H:%M:%S") Purging old files from $dumpster.\n" >> $logfile
-            find $dumpster -cmin +240 -type f -delete
+            find $dumpster -cmin +800 -type f -delete
             # Finally, sleep for 5 minutes
             sleep 5m
         fi
