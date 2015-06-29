@@ -423,18 +423,20 @@ do
   breaktheloop
   # All files here, we are good to go!
   if [[ "$subsneeded" = "NO" ]]; then
-    printf "  Merging video: "
-    trap do_error 1 2
-    mkvmerge --quiet --output $mkvfile \
-      --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile
-    cleanup_quick
-  elif [[ "$showname_raw" = "My.Cat.From.Hell" ]] || [[ "$showname_raw" = "the.Joy.of.Painting" ]] || [[ "$showname_raw" = "Witchblade" ]] || [[ "$showname_raw" = "Looney.Tunes" ]] || [[ "$showname_raw" = "Tom.and.Jerry" ]]; then
-    # English shows with no subs
-    printf "  Merging video: "
-    trap do_error 1 2
-    mkvmerge --quiet --output $mkvfile \
-      --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile
-    cleanup_quick
+	if [[ "$showname_raw" = "My.Cat.From.Hell" ]] || [[ "$showname_raw" = "the.Joy.of.Painting" ]] || [[ "$showname_raw" = "Witchblade" ]] || [[ "$showname_raw" = "Looney.Tunes" ]] || [[ "$showname_raw" = "Tom.and.Jerry" ]]; then
+      	# English shows with no subs
+      	printf "  Merging video: "
+      	trap do_error 1 2
+      	mkvmerge --quiet --output $mkvfile \
+       	 --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile
+      	cleanup_quick
+	fi
+      # Not English, but Dutch
+	  printf "  Merging video: "
+      trap do_error 1 2
+      mkvmerge --quiet --output $mkvfile \
+        --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile
+      cleanup_quick
   else
     printf "  Merging video and subtitles: "
     for tvshowengsubs in "${tvengsubs[@]}"; do [[ "$tvshowengsubs" = "$showname_raw" ]] && engsubs="YES" ; done
