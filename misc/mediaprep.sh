@@ -54,7 +54,7 @@ normal=$(tput sgr0)
 bright=$(tput bold)
 
 # TV shows that have no subs
-tvnosubs=( "Home.Videos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" "Vrienden.Voor.Het.Leven" "Wie.Is.De.Mol" "Swiebertje" "Missie.Aarde" "Danni.Lowinski.NL" "Familie.Kruys" "Zwarte.Tulp" "Voetbalvrouwen" "Draadstaal" "Zie.Ze.Vliegen" "the.Joy.of.Painting" )
+tvnosubs=( "Home.Videos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" "Vrienden.Voor.Het.Leven" "Wie.Is.De.Mol" "Swiebertje" "Missie.Aarde" "Danni.Lowinski.NL" "Familie.Kruys" "Zwarte.Tulp" "Voetbalvrouwen" "Draadstaal" "Zie.Ze.Vliegen" "the.Joy.of.Painting" "Mythbusters" )
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" "Avatar.the.Legend.of.Korra" "Avatar.the.Last.Airbender" )
 # TV Shows with English subs
@@ -423,7 +423,7 @@ do
   breaktheloop
   # All files here, we are good to go!
   if [[ "$subsneeded" = "NO" ]]; then
-	if [[ "$showname_raw" = "My.Cat.From.Hell" ]] || [[ "$showname_raw" = "the.Joy.of.Painting" ]] || [[ "$showname_raw" = "Witchblade" ]] || [[ "$showname_raw" = "Looney.Tunes" ]] || [[ "$showname_raw" = "Tom.and.Jerry" ]]; then
+	if [[ "$showname_raw" = "My.Cat.From.Hell" ]] || [[ "$showname_raw" = "Mythbusters" ]] || [[ "$showname_raw" = "the.Joy.of.Painting" ]] || [[ "$showname_raw" = "Witchblade" ]] || [[ "$showname_raw" = "Looney.Tunes" ]] || [[ "$showname_raw" = "Tom.and.Jerry" ]]; then
       	# English shows with no subs
       	printf "  Merging video: "
       	trap do_error 1 2
