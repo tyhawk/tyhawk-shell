@@ -342,7 +342,7 @@ do
         --quality 23 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
-        --decomb="bob" 2> /dev/null
+        --decomb="default" 2> /dev/null
       transcode_result
     elif [[ "$animation" = "NO" ]]; then
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
@@ -350,7 +350,7 @@ do
         --quality 23 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
-        --decomb="bob" 2> /dev/null
+        --decomb="default" 2> /dev/null
       transcode_result
     fi
   elif [[ "$mediatype" = "TV" ]]; then
@@ -364,7 +364,7 @@ do
         --quality 23 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1024 --loose-anamorphic \
-        --decomb="bob" --deblock 2> /dev/null
+        --decomb="default" --deblock 2> /dev/null
       transcode_result
     elif [[ "$showname_raw" = "Cosmos.A.Space.Time.Odyssey" ]] || [[ "$showname_raw" = "Home.Videos" ]] || [[ "$showname_raw" = "Game.Trailers" ]]; then
       # I want to encode certain files at 720p
@@ -373,7 +373,7 @@ do
         --quality 23 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
-        --decomb="bob" --deblock 2> /dev/null
+        --decomb="default" --deblock 2> /dev/null
       transcode_result
     elif [[ "$animation" = "NO" ]]; then
       # It's a regular TV Show! Let's transcode it!
@@ -382,7 +382,7 @@ do
         --quality 23 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1024 --loose-anamorphic \
-        --decomb="bob" --deblock 2> /dev/null
+        --decomb="default" --deblock 2> /dev/null
       transcode_result
     else
       # Not Movie and TV Show and not animated. This *should* never happen.
