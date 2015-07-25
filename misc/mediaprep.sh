@@ -430,13 +430,14 @@ do
       	mkvmerge --quiet --output $mkvfile \
        	 --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile
       	cleanup_quick
-	fi
+	else
       # Not English, but Dutch
 	  printf "  Merging video: "
       trap do_error 1 2
       mkvmerge --quiet --output $mkvfile \
         --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile
       cleanup_quick
+    fi
   else
     printf "  Merging video and subtitles: "
     for tvshowengsubs in "${tvengsubs[@]}"; do [[ "$tvshowengsubs" = "$showname_raw" ]] && engsubs="YES" ; done
