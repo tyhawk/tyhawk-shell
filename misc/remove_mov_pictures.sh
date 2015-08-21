@@ -6,5 +6,5 @@ echo "Array length: ${#videobestanden[@]}"
 
 for bestand in ${videobestanden[@]}
 do
-    find "$directory" -name "${bestand}.JPG"
+    find "$directory" -name "${bestand}.JPG" -delete
 done
