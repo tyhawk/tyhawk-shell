@@ -21,7 +21,7 @@ do
 			exit 0
 		else
 			# There are still files. Move the top file to the workdir
-			filename=$(find /home/tyhawk/TransFusion/90_Prequeue -type f -name '*[avi|mp4|mkv]' -exec basename {} \; | sort -u | head -n 1) 
+			filename=$(find /home/tyhawk/TransFusion/90_Prequeue -type f -name '*avi' -o -name '*mp4' -o -name '*mkv' -exec basename {} \; | sort -u | head -n 1) 
 			# Remove suffix so we don't miss any subtitles
 			filename="${filename%.*}"
 			# Move the file (and subs if there are any) to the workdir
