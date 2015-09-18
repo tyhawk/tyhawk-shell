@@ -13,10 +13,10 @@ do
 	# Start MediaPrep
 	$HOME/bin/mediaprep
 	# Check if there are any new files in the workdir
-	if [[ $(ls $workdir/* | wc -l) -eq 0 ]]
+	if [[ $(ls $workdir/ | wc -l) -eq 0 ]]
 	then
 		# Check if there are files in the pre-queue
-		if [[ $(ls $prequeue/* | wc -l) -eq 0 ]]
+		if [[ $(ls $prequeue/ | wc -l) -eq 0 ]]
 		then
 			exit 0
 		else
@@ -25,7 +25,7 @@ do
 			# Remove suffix so we don't miss any subtitles
 			filename="${filename%.*}"
 			# Move the file (and subs if there are any) to the workdir
-			mv "$prequeue/$filename.*" "$workdir/"
+			mv $prequeue/${filename}.* $workdir/
 		fi
 	fi
 done
