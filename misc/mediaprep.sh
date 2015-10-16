@@ -361,7 +361,7 @@ do
       # Its an animated TV show! Let's transcode it!
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune animation \
-        --quality 23 --rate 25 --cfr \
+        --quality 20 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1024 --loose-anamorphic \
         --decomb="default" --deblock 2> /dev/null
@@ -370,7 +370,7 @@ do
       # I want to encode certain files at 720p
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
-        --quality 23 --rate 25 --cfr \
+        --quality 20 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
         --decomb="default" --deblock 2> /dev/null
@@ -379,7 +379,7 @@ do
       # It's a regular TV Show! Let's transcode it!
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
-        --quality 23 --rate 25 --cfr \
+        --quality 20 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1024 --loose-anamorphic \
         --decomb="default" --deblock 2> /dev/null
