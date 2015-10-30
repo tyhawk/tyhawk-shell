@@ -67,7 +67,7 @@ transcode_file() {
 	HandBrakeCLI --input $hbinput --output $hboutput --verbose="0" --optimize \
 		--x264-preset="faster" --encoder x264 --x264-tune film --quality 20 --rate 25 --cfr \
 		--audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
-		--maxWidth 1920 --maxHeight 1080 --loose-anamorphic --decomb="default" --deblock 2&1> /dev/null
+		--maxWidth 1920 --maxHeight 1080 --loose-anamorphic --decomb="default" --deblock >/dev/null 2>&1
 	if [[ "$?" -eq 0 ]]; then
 		msgtolog "Conversion OK"
 	else
@@ -96,7 +96,7 @@ optimize_file() {
 	# Optimize & clean the file
 	mkvfileclean="$tmpdir/$trailerdone"
 	msgtolog "Start optimize and clean"
-	mkclean --optimize --keep-cues --quiet "$mkvfile" "$mkvfileclean" 2&1> /dev/null
+	mkclean --optimize --keep-cues --quiet "$mkvfile" "$mkvfileclean" >/dev/null 2>&1
 	if [[ "$?" -eq 0 ]]; then
 		msgtolog "Optimize and clean OK"
 		# Delete the mkv file
@@ -152,7 +152,7 @@ clear
 filestodo=( $(find $trailerdir/ -type f | sort -u) )
 filestodocount="${#filestodo[@]}"
 if [[ "$filestodocount" -eq 0 ]]; then
-  printf " none\n"
+  msgtolog "No files to process"
   exit 0
 fi
 
