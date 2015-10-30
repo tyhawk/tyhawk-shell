@@ -9,7 +9,7 @@ trailerdir="$rootdir/GameTrailers"
 tmpdir="/tmp"
 finisheddir="/mnt/HomeVideos/GameTrailers"
 dumpsterdir="$rootdir/99_Dumpster"
-logfile="$HOME/converttrailer.log"
+logfile="$HOME/trailerconvert.log"
 
 # Functions
 msgtolog() {
@@ -63,7 +63,7 @@ transcode_file() {
 	hbinput="$trailerfile"
 	hboutput="$tmpdir/gametrailer_tmp.mp4"
 	# Transcode the trailer
-	msgtolog "Start conversion $hbinput"
+	msgtolog "Start conversion"
 	HandBrakeCLI --input $hbinput --output $hboutput --verbose="0" --optimize \
 		--x264-preset="faster" --encoder x264 --x264-tune film --quality 20 --rate 25 --cfr \
 		--audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
