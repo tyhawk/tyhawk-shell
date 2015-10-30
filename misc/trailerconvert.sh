@@ -96,7 +96,7 @@ optimize_file() {
 	# Optimize & clean the file
 	mkvfileclean="$tmpdir/$trailerdone"
 	msgtolog "Start optimize and clean"
-	mkclean --optimize --keep-cues "$mkvfile" "$mkvfileclean"
+	mkclean --optimize --keep-cues --quiet "$mkvfile" "$mkvfileclean" 2&1> /dev/null
 	if [[ "$?" -eq 0 ]]; then
 		msgtolog "Optimize and clean OK"
 		# Delete the mkv file
@@ -112,7 +112,7 @@ transfer_file() {
 	# Rsync the file to the fileserver
 	msgtolog "Start transfer of file $trailerdone"
 	rsync --perms --times --quiet --remove-source-files --partial "$mkvfileclean" "$finisheddir"
-	if [[ "$?" -gt 0 ]]; then
+	if [[ "$?" -eq 0 ]]; then
 		msgtolog "Transfer OK"
 		cleanup_three
 	else
