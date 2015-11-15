@@ -428,14 +428,14 @@ do
       	printf "  Merging video: "
       	trap do_error 1 2
       	mkvmerge --quiet --output $mkvfile \
-       	 --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile
+       	 --language 0:eng --default-track 0 --language 1:eng --default-track 1 $videofile && do_ok
       	cleanup_quick
 	else
       # Not English, but Dutch
 	  printf "  Merging video: "
       trap do_error 1 2
       mkvmerge --quiet --output $mkvfile \
-        --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile
+        --language 0:dut --default-track 0 --language 1:dut --default-track 1 $videofile && do_ok
       cleanup_quick
     fi
   else
