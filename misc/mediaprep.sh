@@ -54,7 +54,7 @@ normal=$(tput sgr0)
 bright=$(tput bold)
 
 # TV shows that have no subs
-tvnosubs=( "Home.Videos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" "Vrienden.Voor.Het.Leven" "Wie.Is.De.Mol" "Swiebertje" "Missie.Aarde" "Danni.Lowinski.NL" "Familie.Kruys" "Zwarte.Tulp" "Voetbalvrouwen" "Draadstaal" "Zie.Ze.Vliegen" "the.Joy.of.Painting" "MythBusters" "NOVA" "Het.Zonnetje.in.Huis" "Mr.Deity" "Overspel" "Raveleijn" )
+tvnosubs=( "Home.Videos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" "Vrienden.Voor.Het.Leven" "Wie.Is.De.Mol" "Swiebertje" "Missie.Aarde" "Danni.Lowinski.NL" "Familie.Kruys" "Zwarte.Tulp" "Voetbalvrouwen" "Draadstaal" "Zie.Ze.Vliegen" "the.Joy.of.Painting" "MythBusters" "NOVA" "Het.Zonnetje.in.Huis" "Mr.Deity" "Overspel" "Raveleijn" "Tessa" "Vechtershart" )
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" "Avatar.the.Legend.of.Korra" "Avatar.the.Last.Airbender" )
 # TV Shows with English subs
