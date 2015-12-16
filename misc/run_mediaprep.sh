@@ -21,7 +21,8 @@ do
 			exit 0
 		else
 			# There are still files. Move the top file to the workdir
-			filetomove=$(find $prequeue -type f -name '*avi' -o -name '*mp4' -o -name '*mkv' | sort -u | head -n 1)
+			oldestfile=$(
+			filetomove=$(ls -rt $prequeue | head -n 1)
 			basefile=$( basename $filetomove )
 			# Remove suffix so we don't miss any subtitles
 			filename="${basefile%.*}"
