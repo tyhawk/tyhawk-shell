@@ -21,7 +21,6 @@ do
 			exit 0
 		else
 			# There are still files. Move the top file to the workdir
-			oldestfile=$(
 			filetomove=$(ls -rt $prequeue | head -n 1)
 			basefile=$( basename $filetomove )
 			# Remove suffix so we don't miss any subtitles
