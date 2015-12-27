@@ -10,8 +10,6 @@ do
 	then
 		exit 0
 	fi
-	# Start MediaPrep
-	$HOME/bin/mediaprep
 	# Check if there are any new files in the workdir
 	if [[ $(ls $workdir/ | wc -l) -eq 0 ]]
 	then
@@ -21,12 +19,15 @@ do
 			exit 0
 		else
 			# There are still files. Move the top file to the workdir
-			filetomove=$(ls -rt $prequeue | head -n 1)
-			basefile=$( basename $filetomove )
+			oldestfile=$(ls -rt "$prequeue" | head -n 1 | awk -F "-" '{ print $1 }')
+			filetomove=$(ls $prequeue/${oldestfile}* | sort -u | head -n 1)
+			basefile=$(basename $filetomove)
 			# Remove suffix so we don't miss any subtitles
 			filename="${basefile%.*}"
 			# Move the file (and subs if there are any) to the workdir
 			mv $prequeue/${filename}.* $workdir/
 		fi
 	fi
+        # Start MediaPrep
+        $HOME/bin/mediaprep
 done
