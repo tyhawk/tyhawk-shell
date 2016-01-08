@@ -61,7 +61,7 @@ tvanimation=( "Tom.and.Jerry" "Looney.Tunes" "Avatar.the.Legend.of.Korra" "Avata
 # TV Shows with English subs
 tvengsubs=( "Farscape" "Andromeda" "Babylon.5" )
 # Animated movies
-animatedmovie=( "The.Rescuers" "The.Rescuers.Down.Under" "Peter.Pan" "The.Little.Mermaid" "The.Lion.King" "Tarzan.and.Jane" "Dumbo" "Aladdin" "Snow.White.And.The.Seven.Dwarfs" "Bambi" "Beauty.and.the.Beast" "Titan.A.E" "Brother.Bear" "Pinocchio" "Bambi.II" "Brother.Bear.2" "Atlantis.The.Lost.Empire" "Hercules" "Mulan" "Piglets.Big.Movie" "Lilo.and.Stitch" "Pocahontas" "Poohs.Heffalump.Movie" "The.Princess.and.the.Frog" "Winnie.the.Pooh" "Akira" "the.Jungle.Book" )
+animatedmovie=( "The.Rescuers" "The.Rescuers.Down.Under" "Peter.Pan" "The.Little.Mermaid" "The.Lion.King" "Tarzan.and.Jane" "Dumbo" "Aladdin" "Snow.White.And.The.Seven.Dwarfs" "Bambi" "Beauty.and.the.Beast" "Titan.A.E" "Brother.Bear" "Pinocchio" "Bambi.II" "Brother.Bear.2" "Atlantis.The.Lost.Empire" "Hercules" "Mulan" "Piglets.Big.Movie" "Lilo.and.Stitch" "Pocahontas" "Poohs.Heffalump.Movie" "The.Princess.and.the.Frog" "Winnie.the.Pooh" "Akira" "the.Jungle.Book" "The.Chronicles.of.Riddick.Dark.Fury" )
 ####
 # Functions
 ####
