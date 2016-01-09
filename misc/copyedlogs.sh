@@ -13,6 +13,8 @@ BRIGHT=$(tput bold)
 
 # Folders
 edlogtarget="${HOME}/elitelogs/"
+edlogtargetlog="${edlogtarget}logs/"
+edlogtargetimg="${edlogtarget}images/"
 bkphost="raven.birdsnest.lan"
 bkpfolder="/mnt/Backup/EliteDangerousFlightLogs/"
 imgfolder='/Pictures/Frontier Developments/Elite Dangerous'
@@ -44,7 +46,7 @@ printf "\n${BLUE}Copy all logs to the elitelogs directory${NORMAL}\n"
 # First delete de debuglogs
 find '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Logs/' -type f -name 'debugOutput*log' -delete
 # Then copy the rest
-rsync --archive --progress '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Logs/' $edlogtarget
+rsync --archive --progress '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Logs/' $edlogtargetlog
 # Make sure I keep my logs for safekeeping
 printf "\n${BLUE}Upload logs and images to the backup folder on the SAN${NORMAL}\n"
 rsync --archive --progress --exclude '.DS_Store' --exclude 'Screenshot*' $edlogtarget $bkphost:$bkpfolder
@@ -59,14 +61,14 @@ else
 fi
 # Copy the screenshots. They may need further processing / renaming
 printf "\n${BLUE}Move new images to the elitelogs directory for further processing${NORMAL}\n"
-rsync --archive --progress '/Users/jgerritse/Pictures/Frontier Developments/Elite Dangerous/' $edlogtarget
+rsync --archive --progress '/Users/jgerritse/Pictures/Frontier Developments/Elite Dangerous/' $edlogtargetimg
 if [[ "$?" -eq 0 ]]
 then
 	find '/Users/jgerritse/Pictures/Frontier Developments/Elite Dangerous/' -type f -name '*bmp' -delete
 fi
 # Converting the images
 printf "\n${BLUE}Converting images to png${NORMAL}\n"
-for image in $(find $edlogtarget -name '*bmp')
+for image in $(find $edlogtargetimg -name '*bmp')
 do
 	if [[ -z "$image" ]]
 	then
@@ -75,7 +77,7 @@ do
 		# Determine the filename
 		imagename=$(basename $image | sed 's/\.[^.]*$//')
 		printf " Processing $image: "
-		sips -s format png $image --out ${edlogtarget}/${imagename}.png >/dev/null 2>&1
+		sips -s format png $image --out ${edlogtargetimg}/${imagename}.png >/dev/null 2>&1
 		if [[ "$?" -eq 0 ]]
 		then
 			printf "${GREEN}OK${NORMAL}\n"
