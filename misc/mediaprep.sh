@@ -55,13 +55,13 @@ bright=$(tput bold)
 
 # TV shows that have no subs
 tvnosubs=( "Home.Videos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" "Vrienden.Voor.Het.Leven" "Wie.Is.De.Mol" "Swiebertje" "Missie.Aarde" "Danni.Lowinski.NL" "Familie.Kruys" "Zwarte.Tulp" "Voetbalvrouwen" "Draadstaal" "Zie.Ze.Vliegen" "the.Joy.of.Painting"
-"MythBusters" "NOVA" "Het.Zonnetje.in.Huis" "Mr.Deity" "Overspel" "Raveleijn" "Tessa" "Vechtershart" "50.Jaar.Andre.van.Duin" "de.Fractie" )
+"MythBusters" "NOVA" "Het.Zonnetje.in.Huis" "Mr.Deity" "Overspel" "Raveleijn" "Tessa" "Vechtershart" "50.Jaar.van.Duin" "de.Fractie" )
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" "Avatar.the.Legend.of.Korra" "Avatar.the.Last.Airbender" )
 # TV Shows with English subs
 tvengsubs=( "Farscape" "Andromeda" "Babylon.5" )
 # Animated movies
-animatedmovie=( "The.Rescuers" "The.Rescuers.Down.Under" "Peter.Pan" "The.Little.Mermaid" "The.Lion.King" "Tarzan.and.Jane" "Dumbo" "Aladdin" "Snow.White.And.The.Seven.Dwarfs" "Bambi" "Beauty.and.the.Beast" "Titan.A.E" "Brother.Bear" "Pinocchio" "Bambi.II" "Brother.Bear.2" "Atlantis.The.Lost.Empire" "Hercules" "Mulan" "Piglets.Big.Movie" "Lilo.and.Stitch" "Pocahontas" "Poohs.Heffalump.Movie" "The.Princess.and.the.Frog" "Winnie.the.Pooh" "Akira" "the.Jungle.Book" )
+animatedmovie=( "The.Rescuers" "The.Rescuers.Down.Under" "Peter.Pan" "The.Little.Mermaid" "The.Lion.King" "Tarzan.and.Jane" "Dumbo" "Aladdin" "Snow.White.And.The.Seven.Dwarfs" "Bambi" "Beauty.and.the.Beast" "Titan.A.E" "Brother.Bear" "Pinocchio" "Bambi.II" "Brother.Bear.2" "Atlantis.The.Lost.Empire" "Hercules" "Mulan" "Piglets.Big.Movie" "Lilo.and.Stitch" "Pocahontas" "Poohs.Heffalump.Movie" "The.Princess.and.the.Frog" "Winnie.the.Pooh" "Akira" "the.Jungle.Book" "The.Chronicles.of.Riddick.Dark.Fury" )
 ####
 # Functions
 ####
