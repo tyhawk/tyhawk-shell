@@ -75,7 +75,8 @@ do
 		printf "Nothing to do.\n"
 	else
 		# Determine the filename
-		imagename=$(basename $image | sed 's/\.[^.]*$//')
+		#imagename=$(basename $image | sed 's/\.[^.]*$//')
+		imagename="ZZ-Screenshot-$(date +%y%m%d-%H%M%S)"
 		printf " Processing $image: "
 		sips -s format png $image --out ${edlogtargetimg}/${imagename}.png >/dev/null 2>&1
 		if [[ "$?" -eq 0 ]]
@@ -85,6 +86,7 @@ do
 		else
 			printf "${RED}FAIL${NORMAL}\n"
 		fi
+		sleep 1 # In case processing took less than a second and the file is overwritten
 	fi
 done
 
