@@ -63,7 +63,7 @@ find '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite D
 rsync --archive --progress '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Logs/' $edlogtargetlog
 # Make sure I keep my logs for safekeeping
 printf "\n${BLUE}Upload logs and images to the backup folder on the SAN${NORMAL}\n"
-rsync --archive --progress --exclude '.DS_Store' --exclude 'Screenshot*' --delete $edlogtarget $bkphost:$bkpfolder
+rsync --archive --progress --exclude '.DS_Store' --exclude 'ZZ-Screenshot*' --delete $edlogtarget $bkphost:$bkpfolder
 # Remove any files older than 14 days from the ED log dir
 printf "\n${BLUE}Purge old logs from the Elite Dangerous log directory${NORMAL}\n"
 find '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Logs/' -type f -mtime +30 -delete
