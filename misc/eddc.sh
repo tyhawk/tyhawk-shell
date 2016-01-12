@@ -32,9 +32,9 @@ gfcheck() {
 printf "${BLUE}..:: Elite Dangerous log & image copier ::..${NORMAL}\n"
 
 # Create dir if it doesn't exist
-if [[ -d "$edlogtarget" ]]
+if [[ ! -d "$edlogtarget" ]]
 then
-	mkdir -p "$edlogtarget{logs,images}"
+	mkdir -p $edlogtarget{logs,images}
 fi
 
 # Step 1 - Check verbise logging
