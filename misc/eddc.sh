@@ -12,7 +12,7 @@ NORMAL=$(tput sgr0)
 BRIGHT=$(tput bold)
 
 # Folders
-edlogtarget="${HOME}/elitelogs/"
+edlogtarget="${HOME}/elitedata/"
 edlogtargetlog="${edlogtarget}logs/"
 edlogtargetimg="${edlogtarget}images/"
 bkphost="raven.birdsnest.lan"
