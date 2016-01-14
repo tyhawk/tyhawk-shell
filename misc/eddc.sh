@@ -60,7 +60,7 @@ printf "\n${BLUE}Copy all logs to the elitelogs directory${NORMAL}\n"
 # First delete de debuglogs
 find '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Logs/' -type f -name 'debugOutput*log' -delete
 # Then copy the rest
-rsync --archive --progress '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Logs/' $edlogtargetlog
+rsync --archive --progress --exclude '*dmp' --exclude 'Config*' '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Logs/' $edlogtargetlog
 # Make sure I keep my logs for safekeeping
 printf "\n${BLUE}Upload logs and images to the backup folder on the SAN${NORMAL}\n"
 rsync --archive --progress --exclude '.DS_Store' --exclude 'ZZ-Screenshot*' --delete $edlogtarget $bkphost:$bkpfolder
