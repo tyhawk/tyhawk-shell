@@ -88,7 +88,7 @@ do
 		#imagename=$(basename $image | sed 's/\.[^.]*$//')
 		imagename="ZZ-Screenshot-$(date +%y%m%d-%H%M%S)"
 		printf " Processing $image: "
-		sips -s format png $image --out ${edlogtargetimg}/${imagename}.png >/dev/null 2>&1
+		sips -s format png $image --out ${edlogtargetimg}${imagename}.png >/dev/null 2>&1
 		if [[ "$?" -eq 0 ]]
 		then
 			printf "${GREEN}OK${NORMAL}\n"
