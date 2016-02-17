@@ -26,7 +26,7 @@
 #             -a  Set foreign audio language (override default)
 #             -s  Set subtitle language (override default)
 #
-# Add option:   mediaprep.sh [FLAG] [FILENAME] 
+# Add option:   mediaprep.sh [FLAG] [FILENAME]
 #               Process single file only
 #
 # Move certain stuff into a conf file
@@ -137,6 +137,14 @@ breaktheloop() {
   fi
 }
 
+# File system check function
+checkdir() {
+  if [[ ! -d "$1" ]]; then
+    printf "Directory $1 not found: "; do_error
+    exit 1
+  fi
+}
+
 ####
 # The script itself
 ####
@@ -173,26 +181,11 @@ if ((missing_counter > 0)); then
 fi
 
 # File system check
-if [[ ! -d "$rootdir" ]]; then
-  printf "Directory $rootdir not found: "; do_error
-  exit 1
-fi
-if [[ ! -d "$queue" ]]; then
-  printf "Directory $queue not found: "; do_error
-  exit 1
-fi
-if [[ ! -d "$tmpfiles" ]]; then
-  printf "Directory $tmpfiles not found: "; do_error
-  exit 1
-fi
-if [[ ! -d "$finished" ]]; then
-  printf "Directory $finished not found: "; do_error
-  exit 1
-fi
-if [[ ! -d "$dumpster" ]]; then
-  printf "Directory $dumpster not found: "; do_error
-  exit 1
-fi
+checkdir $rootdir
+checkdir $queue
+checkdir $tmpfiles
+checkdir $finished
+checkdir $dumpster
 
 # Next, clean out any files from directories that should be empty
 printf "\n${yellow}Residual file check.${normal}\n"
@@ -464,7 +457,7 @@ do
   step="4. Optimizing"
   # Announce step 4
   printf " ${yellow}Step 4${normal} - Optimizing the Matroska file.\n"
-  mkclean --optimize --keep-cues "$mkvfile" "${mkvfile}-clean" && mv -f "${mkvfile}-clean" "$mkvfile" 
+  mkclean --optimize --keep-cues "$mkvfile" "${mkvfile}-clean" && mv -f "${mkvfile}-clean" "$mkvfile"
   #######################################
   #### STEP 5 - Move processed files ####
   #######################################
