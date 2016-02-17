@@ -14,7 +14,7 @@ BRIGHT=$(tput bold)
 # Folders
 edlogtarget="${HOME}/elitedata/"
 edlogtargetlog="${edlogtarget}logs/"
-edlogtargetimg="${edlogtarget}images/"
+edlogtargetimg="${edlogtarget}images/Todo/"
 bkphost="raven.birdsnest.lan"
 bkpfolder="/mnt/Backup/EliteDangerousFlightLogs/"
 imgfolder='/Pictures/Frontier Developments/Elite Dangerous'
@@ -51,6 +51,7 @@ else
 fi
 
 # Step 2 - Backup of the key bindings
+# TODO - Add checks to see if anything has changed here since the last backup
 printf "\n${BLUE}Making a backup copy of the key bindings file: ${NORMAL}"
 cp '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Options/Bindings/Custom.1.8.binds' ${edlogtarget}Custom.1.8.binds-$(date +%y%m%d)
 gfcheck
