@@ -19,15 +19,6 @@ bkphost="raven.birdsnest.lan"
 bkpfolder="/mnt/Backup/EliteDangerousFlightLogs/"
 imgfolder='/Pictures/Frontier Developments/Elite Dangerous'
 
-gfcheck() {
-	if [[ "$?" -eq 0 ]]
-	then
-		printf "${GREEN}OK${NORMAL}\n"
-	else
-		printf "${RED}FAIL${NORMAL}\n"
-	fi
-}
-
 # Header
 printf "${BLUE}..:: Elite Dangerous log & image copier ::..${NORMAL}\n"
 
@@ -53,8 +44,12 @@ fi
 # Step 2 - Backup of the key bindings
 # TODO - Add checks to see if anything has changed here since the last backup
 printf "\n${BLUE}Making a backup copy of the key bindings file: ${NORMAL}"
-cp '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Options/Bindings/Custom.1.8.binds' ${edlogtarget}Custom.1.8.binds-$(date +%y%m%d)
-gfcheck
+if cp '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Options/Bindings/Custom.1.8.binds' ${edlogtarget}Custom.1.8.binds-$(date +%y%m%d)
+then
+	printf "${GREEN}OK${NORMAL}\n"
+else
+	printf "${RED}FAIL${NORMAL}\n"
+fi
 
 # Step 3 - Copy and process the logs
 printf "\n${BLUE}Copy all logs to the elitelogs directory${NORMAL}\n"
@@ -67,8 +62,12 @@ printf "\n${BLUE}Upload logs and images to the backup folder on the SAN${NORMAL}
 rsync --archive --progress --exclude '.DS_Store' --exclude 'ZZ-Screenshot*' --delete $edlogtarget $bkphost:$bkpfolder
 # Remove any files older than 14 days from the ED log dir
 printf "\n${BLUE}Purge old logs from the Elite Dangerous log directory${NORMAL}\n"
-find '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Logs/' -type f -mtime +30 -delete
-gfcheck
+if find '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Logs/' -type f -mtime +30 -delete
+then
+	printf "${GREEN}OK${NORMAL}\n"
+else
+	printf "${RED}FAIL${NORMAL}\n"
+fi
 
 # Step 4 - Copy the screenshots. They may need further processing / renaming
 printf "\n${BLUE}Move new images to the elitelogs directory for further processing${NORMAL}\n"
