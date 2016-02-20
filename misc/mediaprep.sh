@@ -334,14 +334,14 @@ do
     if [[ "$animation" = "YES" ]]; then
         HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune animation \
-        --quality 23 --rate 25 --cfr \
+        --quality 23 --rate 25 --pfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1280 --maxHeight 720 --loose-anamorphic 2> /dev/null
       transcode_result
     elif [[ "$animation" = "NO" ]]; then
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
-        --quality 23 --rate 25 --cfr \
+        --quality 23 --rate 25 --pfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1280 --maxHeight 720 --loose-anamorphic 2> /dev/null
       transcode_result
@@ -354,7 +354,7 @@ do
       # Its an animated TV show! Let's transcode it!
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune animation \
-        --quality 20 --rate 25 --cfr \
+        --quality 20 --rate 25 --pfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1024 --loose-anamorphic --deblock 2> /dev/null
       transcode_result
@@ -362,7 +362,7 @@ do
       # I want to encode certain files at 720p
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
-        --quality 20 --rate 25 --cfr \
+        --quality 20 --rate 25 --pfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1280 --maxHeight 720 --loose-anamorphic --deblock 2> /dev/null
       transcode_result
@@ -370,7 +370,7 @@ do
       # It's a regular TV Show! Let's transcode it!
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
-        --quality 20 --rate 25 --cfr \
+        --quality 20 --rate 25 --pfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
         --maxWidth 1024 --loose-anamorphic --deblock 2> /dev/null
       transcode_result
