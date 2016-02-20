@@ -14,7 +14,7 @@ BRIGHT=$(tput bold)
 # Folders
 edlogtarget="${HOME}/elitedata/"
 edlogtargetlog="${edlogtarget}logs/"
-edlogtargetimg="${edlogtarget}images/Todo/"
+edlogtargetimg="${edlogtarget}images-todo/"
 bkphost="raven.birdsnest.lan"
 bkpfolder="/mnt/Backup/EliteDangerousFlightLogs/"
 imgfolder='/Pictures/Frontier Developments/Elite Dangerous'
