@@ -319,6 +319,7 @@ do
   #################################
   #### STEP 2 - Transcode file ####
   #################################
+  # REMEMBER: use --decomb="default" if you ever encounter old videos
   step="2. Transcode"
   # Announce step 2
   printf " ${yellow}Step 2${normal} - Transcoding video.\n"
@@ -335,16 +336,14 @@ do
         --x264-preset="faster" --encoder x264 --x264-tune animation \
         --quality 23 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
-        --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
-        --decomb="default" 2> /dev/null
+        --maxWidth 1280 --maxHeight 720 --loose-anamorphic 2> /dev/null
       transcode_result
     elif [[ "$animation" = "NO" ]]; then
       HandBrakeCLI --input $hbinfile --output $hboutfile --verbose="0" --optimize \
         --x264-preset="faster" --encoder x264 --x264-tune film \
         --quality 23 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
-        --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
-        --decomb="default" 2> /dev/null
+        --maxWidth 1280 --maxHeight 720 --loose-anamorphic 2> /dev/null
       transcode_result
     fi
   elif [[ "$mediatype" = "TV" ]]; then
@@ -357,8 +356,7 @@ do
         --x264-preset="faster" --encoder x264 --x264-tune animation \
         --quality 20 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
-        --maxWidth 1024 --loose-anamorphic \
-        --decomb="default" --deblock 2> /dev/null
+        --maxWidth 1024 --loose-anamorphic --deblock 2> /dev/null
       transcode_result
     elif [[ "$showname_raw" = "Cosmos.A.Space.Time.Odyssey" ]] || [[ "$showname_raw" = "Home.Videos" ]] || [[ "$showname_raw" = "Game.Trailers" ]]; then
       # I want to encode certain files at 720p
@@ -366,8 +364,7 @@ do
         --x264-preset="faster" --encoder x264 --x264-tune film \
         --quality 20 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
-        --maxWidth 1280 --maxHeight 720 --loose-anamorphic \
-        --decomb="default" --deblock 2> /dev/null
+        --maxWidth 1280 --maxHeight 720 --loose-anamorphic --deblock 2> /dev/null
       transcode_result
     elif [[ "$animation" = "NO" ]]; then
       # It's a regular TV Show! Let's transcode it!
@@ -375,8 +372,7 @@ do
         --x264-preset="faster" --encoder x264 --x264-tune film \
         --quality 20 --rate 25 --cfr \
         --audio 1 --aencoder av_aac --ab 160 --mixdown stereo \
-        --maxWidth 1024 --loose-anamorphic \
-        --decomb="default" --deblock 2> /dev/null
+        --maxWidth 1024 --loose-anamorphic --deblock 2> /dev/null
       transcode_result
     else
       # Not Movie and TV Show and not animated. This *should* never happen.
