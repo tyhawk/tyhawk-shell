@@ -70,8 +70,8 @@ move_tvshow () {
 staging="$HOME/TransFusion/03_Finished"
 
 # Define root dirs for TV shows & movies
-tvshowroot="/mnt/TV"
-movieroot="/mnt/Movies"
+tvshowroot="/mnt/TVSeries"
+movieroot="/mnt/Speelfilm"
 dumpster="$HOME/TransFusion/99_Dumpster/"
 
 # Logfile
