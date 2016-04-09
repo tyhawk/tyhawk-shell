@@ -151,7 +151,7 @@ else
             sleep 2m
             # Move the movie files first
             printf "$(date +"%b %d %H:%M:%S") Processing movies.\n" >> $logfile
-            movies=( $(find $staging/ -type f -name '*-\(????\).mkv' -exec basename {} \;) )
+            movies=( $(find $staging/ -type f -name '*-????.mkv' -exec basename {} \;) )
             if [[ ! -z "$movies" ]]; then
                 move_movie
 	    else
