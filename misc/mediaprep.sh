@@ -391,7 +391,7 @@ do
   # Their library wants movies to look like this: some.movie(yyyy).mkv
   # I prefer some.movie-(yyyy).mkv which also works fine.
   if [[ "$mediatype" = "Movie" ]]; then
-    mkvfile="$finished/$moviename_raw-$movieyear.mkv"
+    mkvfile="$finished/$moviename_raw-($movieyear).mkv"
   else
     mkvfile="$finished/$mediafile.mkv"
   fi
