@@ -30,9 +30,17 @@ move_movie () {
     # Movies are easier, they all go into one directory
     for moviefile in "${movies[@]}"
     do
+        # Extract the name we need to create the correct directory
+        moviedirname="${moviefile%.*}"
+        moviedir="$movieroot/$moviedirname"
+        # Create a subdirectory for the movie
+        if [[ ! -d "$moviedir" ]]
+        then
+          mkdir -p $moviedir
+        fi
         # We move the file to its proper location
         printf "$(date +"%b %d %H:%M:%S") Moving file $moviefile to $movieroot\n"  >> $logfile
-        rsync --perms --times --progress --human-readable --compress --remove-source-files --partial "$staging/$moviefile" "$movieroot"
+        rsync --perms --times --progress --human-readable --compress --remove-source-files --partial "$staging/$moviefile" "$moviedir"
         if [[ "$?" -gt 0 ]]; then
             printf "$(date +"%b %d %H:%M:%S") Transfer of $moviefile failed\n" >> $logfile
         else
