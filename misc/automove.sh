@@ -63,6 +63,8 @@ move_tvshow () {
         showlocation="$tvshowroot/$showname/Season$season"
         if [[ ! -d "$showlocation" ]]; then
             mkdir -p $showlocation
+            chmod 755 "$tvshowroot/$showname"
+            chmod 755 $showlocation
         fi
         # We move the file to its proper location
         printf "$(date +"%b %d %H:%M:%S") Moving file $tvshowfile to $showlocation\n" >> $logfile
