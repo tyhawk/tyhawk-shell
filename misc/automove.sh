@@ -37,6 +37,7 @@ move_movie () {
         if [[ ! -d "$moviedir" ]]
         then
           mkdir -p $moviedir
+          chmod 755 $moviedir
         fi
         # We move the file to its proper location
         printf "$(date +"%b %d %H:%M:%S") Moving file $moviefile to $movieroot\n"  >> $logfile
