@@ -476,5 +476,6 @@ do
   then
     printf " ${yellow}Step 6${normal} - Starting automove.\n"
     $HOME/bin/automove
+  fi
 done
 # End Script
