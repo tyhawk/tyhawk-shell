@@ -469,5 +469,12 @@ do
     mv ${subtitle_raw} ${dumpster} && do_ok
   fi
   breaktheloop
+  ################################
+  #### Step 6. Start automove ####
+  ################################
+  if [[ -e $HOME/bin/automove ]]
+  then
+    printf " ${yellow}Step 6${normal} - Starting automove.\n"
+    $HOME/bin/automove
 done
 # End Script

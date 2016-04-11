@@ -140,41 +140,26 @@ else
     echo $$ > $lf
     # sleep just to make testing easier
     sleep 5s
-    # Time to start our loop
-    while true
-    do
-        # Time to start checking for files
-        # First check if there are MKV files in the Staging dir
-        if [[ $(find $staging/*mkv 2>/dev/null | wc -l) -eq 0 ]]; then
-            sleep 5m
-        else
-            # First wait for 2 minutes to make sure not to try to move files that aren't done yet
-            sleep 2m
-            # Move the movie files first
-            printf "$(date +"%b %d %H:%M:%S") Processing movies.\n" >> $logfile
-            movies=( $(find $staging/ -type f -name '*-\(????\).mkv' -exec basename {} \;) )
-            if [[ ! -z "$movies" ]]; then
-                move_movie
-	    else
-		printf "$(date +"%b %d %H:%M:%S") No movies found.\n" >> $logfile
-            fi
-            # Next, tv shows
-            printf "$(date +"%b %d %H:%M:%S") Processing tv shows (if any are there).\n" >> $logfile
-            tvshows=( $(find $staging/ -type f -name "*-s??e??-*.mkv" -exec basename {} \;) )
-            if [[ ! -z "$tvshows" ]]; then
-                move_tvshow
-	    else
-		printf "$(date +"%b %d %H:%M:%S") No tv shows found.\n" >> $logfile
-            fi
-            # Now, we sleep for one minute
-            sleep 1m
-            # And delete old files from the trash folder to regain space (anything older then 4 hours)
-            printf "$(date +"%b %d %H:%M:%S") Purging old files from $dumpster.\n" >> $logfile
-            find $dumpster -cmin +800 -type f -delete
-            # Finally, sleep for 5 minutes
-            sleep 5m
-        fi
-    done
+    # Time to start
+    # Move the movie files first
+    printf "$(date +"%b %d %H:%M:%S") Processing movies.\n" >> $logfile
+    movies=( $(find $staging/ -type f -name '*-\(????\).mkv' -exec basename {} \;) )
+    if [[ ! -z "$movies" ]]; then
+        move_movie
+    else
+      printf "$(date +"%b %d %H:%M:%S") No movies found.\n" >> $logfile
+    fi
+    # Next, tv shows
+    printf "$(date +"%b %d %H:%M:%S") Processing tv shows (if any are there).\n" >> $logfile
+    tvshows=( $(find $staging/ -type f -name "*-s??e??-*.mkv" -exec basename {} \;) )
+    if [[ ! -z "$tvshows" ]]; then
+        move_tvshow
+    else
+      printf "$(date +"%b %d %H:%M:%S") No tv shows found.\n" >> $logfile
+    fi
+    # And delete old files from the trash folder to regain space (anything older then 4 hours)
+    printf "$(date +"%b %d %H:%M:%S") Purging old files from $dumpster.\n" >> $logfile
+    find $dumpster -cmin +800 -type f -delete
 fi
 cleanup
 ## END SCRIPT
