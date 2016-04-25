@@ -42,13 +42,18 @@ else
 fi
 
 # Step 2 - Backup of the key bindings
-# TODO - Add checks to see if anything has changed here since the last backup
-printf "\n${BLUE}Making a backup copy of the key bindings file: ${NORMAL}"
-if cp '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Options/Bindings/Custom.1.8.binds' ${edlogtarget}Custom.1.8.binds-$(date +%y%m%d)
+# First, fetch the most recent backup file
+latestkbbkp=$(ls -lrt ${edlogtarget}Custom.1.8.binds* | tail -n 1 | awk '{ print $9 }')
+if [[ $(diff '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Options/Bindings/Custom.1.8.binds' ${edlogtarget}${latestkbbkp} | wc -l) -gt 0 ]]
 then
-	printf "${GREEN}OK${NORMAL}\n"
-else
-	printf "${RED}FAIL${NORMAL}\n"
+	# Key bindings have cahnged. Time to back them up!
+	printf "\n${BLUE}Making a backup copy of the key bindings file: ${NORMAL}"
+	if cp '/Users/jgerritse/Library/Application Support/Frontier Developments/Elite Dangerous/Options/Bindings/Custom.1.8.binds' ${edlogtarget}Custom.1.8.binds-$(date +%y%m%d)
+	then
+		printf "${GREEN}OK${NORMAL}\n"
+	else
+		printf "${RED}FAIL${NORMAL}\n"
+	fi
 fi
 
 # Step 3 - Copy and process the logs
