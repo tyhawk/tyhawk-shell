@@ -50,6 +50,8 @@ do
         printf ". FAILED!\n"
       fi
     fi
+  else
+    printf ". ABORTED!\nMovie not in collection (yet).\n"
   fi
-  sleep 5m # Give Plex time to index the new trailer
+  sleep 2m # Give Plex time to index the new trailer
 done
