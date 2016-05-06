@@ -413,7 +413,7 @@ do
   breaktheloop
   # All files here, we are good to go!
   if [[ "$subsneeded" = "NO" ]]; then
-	if [[ "$showname_raw" = "My.Cat.From.Hell" ]] || [[ "$showname_raw" = "MythBusters" ]] || [[ "$showname_raw" = "NOVA" ]] || [[ "$showname_raw" = "the.Joy.of.Painting" ]] || [[ "$showname_raw" = "Mr.Deity" ]] || [[ "$showname_raw" = "Witchblade" ]] || [[ "$showname_raw" = "Looney.Tunes" ]] || [[ "$showname_raw" = "Tom.and.Jerry" ]]; then
+	if [[ "$showname_raw" = "My.Cat.From.Hell" ]] || [[ "$showname_raw" = "MythBusters" ]] || [[ "$showname_raw" = "NOVA" ]] || [[ "$showname_raw" = "the.Joy.of.Painting" ]] || [[ "$showname_raw" = "Mr.Deity" ]] || [[ "$showname_raw" = "How.The.Universe.Works" ]] || [[ "$showname_raw" = "Witchblade" ]] || [[ "$showname_raw" = "Looney.Tunes" ]] || [[ "$showname_raw" = "Tom.and.Jerry" ]]; then
       	# English shows with no subs
       	printf "  Merging video: "
       	trap do_error 1 2
