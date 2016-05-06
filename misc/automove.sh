@@ -164,4 +164,7 @@ else
     find $dumpster -cmin +800 -type f -delete
 fi
 cleanup
+
+# Kick off trailerdownload
+$HOME/bin/trailerdownload.sh
 ## END SCRIPT
