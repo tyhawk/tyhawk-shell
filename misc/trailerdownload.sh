@@ -52,9 +52,11 @@ do
     trailerdir="/mnt/Speelfilm/$movie"
     downloadthetrailer
   elif [[ -d "/mnt/SpeelfilmKids/$movie" ]]
+  then
     trailerdir="/mnt/SpeelfilmKids/$movie"
     downloadthetrailer
   elif [[ -d "/mnt/Documentaire/$movie" ]]
+  then
     trailerdir="/mnt/Documentaire/$movie"
     downloadthetrailer
   else
