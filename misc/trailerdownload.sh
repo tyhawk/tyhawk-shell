@@ -61,4 +61,5 @@ do
     downloadthetrailer
   else
     printf "Directory for $moviename ($movieyear) not found. SKIPPING\n"
+  fi
 done
