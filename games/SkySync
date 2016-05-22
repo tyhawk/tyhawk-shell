@@ -1,0 +1,2 @@
+#!/bin/bash
+rsync --archive --human-readable --progress /Users/jgerritse/Downloads/Skyrim_Mods/* tyhawk@192.168.178.150:/mnt/Backup/Games/TES5Skyrim_Mods/
