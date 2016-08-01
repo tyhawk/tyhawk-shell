@@ -166,5 +166,8 @@ fi
 cleanup
 
 # Kick off trailerdownload
+printf "$(date +"%b %d %H:%M:%S") Starting trailer download\n" >> $logfile
 $HOME/bin/trailerdownload.sh
+printf "$(date +"%b %d %H:%M:%S") Trailer download finished\n" >> $logfile
+printf "$(date +"%b %d %H:%M:%S") Automove completed. Exiting.\n" >> $logfile
 ## END SCRIPT
