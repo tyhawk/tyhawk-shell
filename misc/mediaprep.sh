@@ -12,7 +12,7 @@
 # 03_Finished     - Completed MKV files, ready for upload to server
 # 99_Dumpster     - Processed queue files ready for removal
 #
-# TV file syntax:     some.tv.show-s01e09-Name_of_the_Episode.ext
+# TV file syntax:     some.tv.show-s01e09-Name_of_the_EpisoDe.ext
 # Movie file syntax:  some.movie.name-2014.ext (input syntax))
 #############################################################################
 # Install on your system - TODO not implemented yet!!!
@@ -54,8 +54,8 @@ normal=$(tput sgr0)
 bright=$(tput bold)
 
 # TV shows that have no subs
-tvnosubs=( "Home.Videos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "de.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.De.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" "Vrienden.Voor.Het.Leven" "Wie.Is.De.Mol" "Swiebertje" "Missie.Aarde" "Danni.Lowinski.NL" "Familie.Kruys" "Zwarte.Tulp" "Voetbalvrouwen" "Draadstaal" "Zie.Ze.Vliegen" "the.Joy.of.Painting"
-"MythBusters" "NOVA" "How.The.Universe.Works" "Het.Zonnetje.in.Huis" "Mr.Deity" "Overspel" "Tessa" "Vechtershart" "50.Jaar.van.Duin" "de.Fractie" "Flikken.Rotterdam" "Mindf.ck" "Break.Free" "Spuiten.en.Slikken" "Spuiten.en.Slikken.Op.Reis" "Bloed.Zweet.en.Spotlights" "Katjas.Bodyscan" "Dictator.NL" "Through.the.Wormhole" "de.Zaak.van.je.Leven" )
+tvnosubs=( "Home.Videos" "Moordvrouw" "Smeris" "Toren.C" "Divorce" "De.Man.met.de.Hamer" "Celblok.H" "Komt.Een.Man.Bij.de.Dokter" "My.Cat.From.Hell" "Witchblade" "Tom.and.Jerry" "Looney.Tunes" "Nieuwe.Buren" "Het.Zandkasteel" "Bluf" "Gooische.Vrouwen" "S1ngle" "Dokter.Tinus" "Penoza" "Baantjer" "Vrienden.Voor.Het.Leven" "Wie.Is.de.Mol" "Swiebertje" "Missie.Aarde" "Danni.Lowinski.NL" "Familie.Kruys" "Zwarte.Tulp" "Voetbalvrouwen" "Draadstaal" "Zie.Ze.Vliegen" "the.Joy.of.Painting"
+"MythBusters" "NOVA" "How.The.Universe.Works" "Het.Zonnetje.in.Huis" "Mr.Deity" "Overspel" "Tessa" "Vechtershart" "50.Jaar.van.Duin" "De.Fractie" "Flikken.Rotterdam" "Mindf.ck" "Break.Free" "Spuiten.en.Slikken" "Spuiten.en.Slikken.Op.Reis" "Bloed.Zweet.en.Spotlights" "Katjas.Bodyscan" "Dictator.NL" "Through.the.Wormhole" "De.Zaak.van.je.Leven" "Vlucht.HS13" )
 # Animation TV shows (hand-drawn content)
 tvanimation=( "Tom.and.Jerry" "Looney.Tunes" "Avatar.the.Legend.of.Korra" "Avatar.the.Last.Airbender" )
 # TV Shows with English subs
