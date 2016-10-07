@@ -1,0 +1,88 @@
+#!/bin/bash
+# ISOWRITER
+# Write an ISO image to USB
+#
+# (c) 2016 - John Gerritse
+#
+# Usage: isowriter <device> <iso>
+# Example: isowiter /dev/sdb archlinux.iso
+#################################################################################
+device="$1"
+isofile="$2"
+
+print_usage()
+{
+  printf "Usage: isowriter <device> <iso>\n"
+  printf "Example: isowiter /dev/sdb archlinux.iso"
+  exit 1
+}
+
+check_root()
+{
+  if [[ $(id -u) -ne 0 ]]
+  then
+    printf "You must be root to run this script.\n"
+    exit 1
+  fi
+}
+
+check_device()
+{
+  if [[ -z "$device" ]]
+  then
+    printf "No device given.\n"
+    print_usage
+  fi
+  if [[ $(fdisk -l | grep "^$device" | wc -l) -ne 1 ]]
+  then
+    printf "Device $device not found.\n"
+    exit 1
+  fi
+}
+
+check_iso()
+{
+  if [[ -z "$isofile" ]]
+  then
+    printf "No isofile given.\n"
+    print_usage
+  fi
+  if [[ ! -f "$isofile" ]]
+  then
+    printf "ISO file $isofile not found.\n"
+    exit 1
+  fi
+}
+
+yes_or_no()
+{
+  printf "Write iso $isofile to device $device.\n"
+  read -p "Are you sure? (y/N)  " -n 1 -r
+  if [[ $REPLY =~ ^[Nn]$ ]]
+  then
+    exit 0
+  fi
+}
+
+write_iso()
+{
+  printf "\n\nCopying iso $isofile to $device:\n"
+  dd bs=4M if="$device" of="$isofile" status=progress
+  if [[ "$?" -ne 0 ]]
+  then
+    printf "Copy failed!\n"
+    exit 1
+  else
+    printf "Copy successful.\n"
+    exit 0
+  fi
+}
+
+# Run the script
+check_root
+check_device
+check_iso
+yes_or_no
+write_iso
+
+# End script
