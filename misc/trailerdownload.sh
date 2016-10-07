@@ -36,7 +36,6 @@ downloadthetrailer()
       fi
     fi
   fi
-  sleep 2m # Give Plex time to scan the new content
 }
 
 # Read the input file
